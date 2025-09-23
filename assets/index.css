@@ -1,4 +1,28 @@
 /* =========================================
+   ROOT THEME VARIABLES
+========================================= */
+:root {
+  --bg-color: #f5f5f5;
+  --text-color: #333;
+  --navbar-bg: #0077b6;
+  --hero-gradient: linear-gradient(135deg, #0077b6, #0096c7);
+  --feature-bg: white;
+  --feature-shadow: rgba(0, 0, 0, 0.05);
+  --footer-bg: #0077b6;
+}
+
+/* DARK MODE VARIABLES */
+body.dark-mode {
+  --bg-color: #121212;
+  --text-color: #f5f5f5;
+  --navbar-bg: #1e1e1e;
+  --hero-gradient: linear-gradient(135deg, #222, #333);
+  --feature-bg: #1f1f1f;
+  --feature-shadow: rgba(255, 255, 255, 0.05);
+  --footer-bg: #1e1e1e;
+}
+
+/* =========================================
    GLOBAL STYLE
 ========================================= */
 * {
@@ -10,8 +34,9 @@
 body {
   margin: 0;
   font-family: "Segoe UI", Arial, sans-serif;
-  background: #f5f5f5;
-  color: #333;
+  background: var(--bg-color);
+  color: var(--text-color);
+  transition: background 0.3s, color 0.3s;
 }
 
 /* =========================================
@@ -21,7 +46,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #0077b6;
+  background: var(--navbar-bg);
   padding: 10px 30px;
   color: white;
   flex-wrap: wrap;
@@ -41,6 +66,7 @@ body {
   display: flex;
   gap: 15px;
   flex-wrap: wrap;
+  align-items: center;
 }
 
 .navbar nav a {
@@ -66,13 +92,31 @@ body {
 }
 
 /* =========================================
+   DARK MODE TOGGLE BUTTON
+========================================= */
+.toggle-dark {
+  background: transparent;
+  border: 1px solid white;
+  color: white;
+  border-radius: 6px;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.toggle-dark:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* =========================================
    HERO SECTION
 ========================================= */
 .hero {
-  background: linear-gradient(135deg, #0077b6, #0096c7);
+  background: var(--hero-gradient);
   color: white;
   text-align: center;
   padding: 80px 20px;
+  transition: background 0.3s;
 }
 
 .hero h2 {
@@ -84,47 +128,6 @@ body {
   font-size: 1.2rem;
   max-width: 500px;
   margin: 0 auto 20px;
-}
-
-/* CTA Buttons */
-.cta-buttons {
-  display: flex;
-  gap: 15px;
-  justify-content: center;
-  margin-top: 20px;
-  flex-wrap: wrap;
-}
-
-.btn-primary,
-.btn-secondary {
-  display: inline-block;
-  padding: 12px 20px;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: bold;
-  transition: all 0.3s;
-  font-size: 1rem;
-}
-
-.btn-primary {
-  background: white;
-  color: #0077b6;
-  border: 2px solid white;
-}
-
-.btn-primary:hover {
-  background: #f1f1f1;
-}
-
-.btn-secondary {
-  background: transparent;
-  border: 2px solid white;
-  color: white;
-}
-
-.btn-secondary:hover {
-  background: white;
-  color: #0077b6;
 }
 
 /* =========================================
@@ -140,12 +143,12 @@ body {
 }
 
 .feature-card {
-  background: white;
+  background: var(--feature-bg);
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 10px var(--feature-shadow);
   text-align: center;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s, background 0.3s;
 }
 
 .feature-card h3 {
@@ -153,14 +156,9 @@ body {
   margin-bottom: 10px;
 }
 
-.feature-card p {
-  font-size: 0.95rem;
-  color: #444;
-}
-
 .feature-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 15px var(--feature-shadow);
 }
 
 /* =========================================
@@ -170,38 +168,8 @@ footer {
   text-align: center;
   padding: 15px;
   font-size: 0.9rem;
-  background: #0077b6;
+  background: var(--footer-bg);
   color: white;
   margin-top: 30px;
-}
-
-/* =========================================
-   RESPONSIVE
-========================================= */
-@media (max-width: 768px) {
-  .hero h2 {
-    font-size: 2rem;
-  }
-  .hero p {
-    font-size: 1rem;
-  }
-  .navbar {
-    padding: 10px 15px;
-  }
-}
-
-@media (max-width: 480px) {
-  .navbar nav {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-  }
-  .cta-buttons {
-    flex-direction: column;
-  }
-  .btn-primary,
-  .btn-secondary {
-    width: 100%;
-    text-align: center;
-  }
+  transition: background 0.3s;
 }

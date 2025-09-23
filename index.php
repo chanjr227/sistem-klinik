@@ -27,6 +27,7 @@ $isLoggedIn = isset($_SESSION['user_id']);
             <?php else: ?>
                 <a href="auth/login.php" class="login-btn">Login Admin</a>
             <?php endif; ?>
+            <button class="toggle-dark" id="darkToggle">🌙</button>
         </nav>
     </header>
 
@@ -59,6 +60,28 @@ $isLoggedIn = isset($_SESSION['user_id']);
     <footer>
         <p>&copy; <?= date("Y") ?> Klinik Sehat. Semua Hak Dilindungi.</p>
     </footer>
+
+    <script>
+        const toggle = document.getElementById('darkToggle');
+        const body = document.body;
+
+        // cek jika user pernah aktifkan dark mode sebelumnya
+        if (localStorage.getItem('dark-mode') === 'enabled') {
+            body.classList.add('dark-mode');
+            toggle.textContent = "☀️";
+        }
+
+        toggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            if (body.classList.contains('dark-mode')) {
+                localStorage.setItem('dark-mode', 'enabled');
+                toggle.textContent = "☀️";
+            } else {
+                localStorage.setItem('dark-mode', 'disabled');
+                toggle.textContent = "🌙";
+            }
+        });
+    </script>
 </body>
 
 </html>
