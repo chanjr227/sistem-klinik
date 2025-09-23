@@ -8,7 +8,10 @@ $isLoggedIn = isset($_SESSION['user_id']);
 <head>
     <meta charset="UTF-8">
     <title>Klinik Sehat - Sistem Manajemen Klinik</title>
+    <!-- CSS utama -->
     <link rel="stylesheet" href="assets/index.css">
+    <!-- CSS modal -->
+    <link rel="stylesheet" href="assets/pendaftaran.css">
 </head>
 
 <body>
@@ -35,7 +38,8 @@ $isLoggedIn = isset($_SESSION['user_id']);
             <h2>Selamat Datang di Klinik Sehat</h2>
             <p>Kami hadir untuk memberikan pelayanan kesehatan terbaik dengan sistem manajemen modern.</p>
             <div class="cta-buttons">
-                <a href="pendaftaran/index.php" class="btn-primary">Daftar Antrian Pasien</a>
+                <!-- Tombol akan membuka modal -->
+                <a href="#" class="btn-primary" id="openModalBtn">Daftar Antrian Pasien</a>
             </div>
         </div>
     </section>
@@ -55,15 +59,53 @@ $isLoggedIn = isset($_SESSION['user_id']);
         </div>
     </section>
 
+    <!-- Modal Pendaftaran -->
+    <div class="modal" id="pendaftaranModal">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <h2>Pendaftaran Pasien</h2>
+            <p>Isi data berikut untuk mendaftar antrian konsultasi.</p>
+
+            <form action="pasien/proses_pendaftaran.php" method="POST">
+                <div class="form-group">
+                    <label for="nama">Nama Pasien</label>
+                    <input type="text" id="nama" name="nama" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="nik">NIK</label>
+                    <input type="text" id="nik" name="nik" maxlength="16" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="keluhan">Keluhan</label>
+                    <textarea id="keluhan" name="keluhan" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="dokter">Pilih Dokter</label>
+                    <select id="dokter" name="id_dokter" required>
+                        <option value="">-- Pilih Dokter --</option>
+                        <option value="1">Dr. Andi - Umum</option>
+                        <option value="2">Dr. Budi - Gigi</option>
+                        <option value="3">Dr. Sari - Anak</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-primary">Daftar Sekarang</button>
+            </form>
+        </div>
+    </div>
+
     <footer>
         <p>&copy; <?= date("Y") ?> Klinik Sehat. Semua Hak Dilindungi.</p>
     </footer>
 
     <script>
+        // Dark Mode Toggle
         const toggle = document.getElementById('darkToggle');
         const body = document.body;
 
-        // cek jika user pernah aktifkan dark mode sebelumnya
         if (localStorage.getItem('dark-mode') === 'enabled') {
             body.classList.add('dark-mode');
             toggle.textContent = "☀️";
@@ -77,6 +119,26 @@ $isLoggedIn = isset($_SESSION['user_id']);
             } else {
                 localStorage.setItem('dark-mode', 'disabled');
                 toggle.textContent = "🌙";
+            }
+        });
+
+        // Modal Logic
+        const modal = document.getElementById("pendaftaranModal");
+        const openBtn = document.getElementById("openModalBtn");
+        const closeBtn = document.getElementById("closeModal");
+
+        openBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            modal.style.display = "flex";
+        });
+
+        closeBtn.addEventListener("click", () => {
+            modal.style.display = "none";
+        });
+
+        window.addEventListener("click", (e) => {
+            if (e.target === modal) {
+                modal.style.display = "none";
             }
         });
     </script>
