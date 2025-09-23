@@ -19,7 +19,6 @@ $isLoggedIn = isset($_SESSION['user_id']);
         </div>
         <nav>
             <a href="index.php" class="active">Beranda</a>
-            <a href="pasien/index.php">Daftar Pasien</a>
             <a href="pendaftaran/index.php">Cek Antrian</a>
             <?php if ($isLoggedIn): ?>
                 <a href="dashboard.php">Dashboard Admin</a>
@@ -37,7 +36,6 @@ $isLoggedIn = isset($_SESSION['user_id']);
             <p>Kami hadir untuk memberikan pelayanan kesehatan terbaik dengan sistem manajemen modern.</p>
             <div class="cta-buttons">
                 <a href="pendaftaran/index.php" class="btn-primary">Daftar Antrian Pasien</a>
-                <a href="auth/login.php" class="btn-secondary">Login Admin</a>
             </div>
         </div>
     </section>
