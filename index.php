@@ -22,7 +22,7 @@ $isLoggedIn = isset($_SESSION['user_id']);
         </div>
         <nav>
             <a href="index.php" class="active">Beranda</a>
-            <a href="pendaftaran/index.php">Cek Antrian</a>
+            <a href="pasien/cek_antrian.php">Cek Antrian</a>
             <?php if ($isLoggedIn): ?>
                 <a href="dashboard.php">Dashboard Admin</a>
                 <a href="auth/logout.php" class="logout-btn">Logout</a>
