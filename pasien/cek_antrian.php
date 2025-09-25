@@ -1,17 +1,6 @@
 <?php
-require '../config/db.php'; // pastikan koneksi database
-
-// Ambil semua pasien dengan join dokter
-$query = "
-    SELECT p.id_pasien, p.nama, p.tanggal_lahir, p.jenis_kelamin, p.no_hp, 
-           d.nama AS nama_dokter, d.spesialisasi, p.created_at
-    FROM pasien p
-    JOIN dokter d ON p.id_dokter = d.id_dokter
-    ORDER BY p.created_at ASC
-";
-$result = $koneksi->query($query);
+require '../config/db.php';
 ?>
-
 <!DOCTYPE html>
 <html lang="id">
 
@@ -31,7 +20,19 @@ $result = $koneksi->query($query);
 
         h2 {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
+        }
+
+        .refresh-info {
+            text-align: center;
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .refresh-info span {
+            font-weight: bold;
+            color: #007bff;
         }
 
         table {
@@ -62,37 +63,46 @@ $result = $koneksi->query($query);
 <body>
     <div class="container">
         <h2>Daftar Antrian Pasien</h2>
+        <div class="refresh-info">
+            Terakhir diperbarui: <span id="last-refresh">Memuat...</span>
+        </div>
 
-        <?php if ($result->num_rows > 0): ?>
-            <table>
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Nama Pasien</th>
-                        <th>Dokter</th>
-                        <th>Spesialisasi</th>
-                        <th>No HP</th>
-                        <th>Waktu Daftar</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php $no = 1;
-                    while ($row = $result->fetch_assoc()): ?>
-                        <tr>
-                            <td><?= $no++; ?></td>
-                            <td><?= htmlspecialchars($row['nama']); ?></td>
-                            <td><?= htmlspecialchars($row['nama_dokter']); ?></td>
-                            <td><?= htmlspecialchars($row['spesialisasi']); ?></td>
-                            <td><?= htmlspecialchars($row['no_hp']); ?></td>
-                            <td><?= date('d-m-Y H:i', strtotime($row['created_at'])); ?></td>
-                        </tr>
-                    <?php endwhile; ?>
-                </tbody>
-            </table>
-        <?php else: ?>
-            <p class="no-data">Belum ada pasien yang mendaftar.</p>
-        <?php endif; ?>
+        <!-- Tabel akan di-load lewat AJAX -->
+        <div id="tabel-antrian">
+            <p class="no-data">Memuat data antrian...</p>
+        </div>
     </div>
+
+    <script>
+        function formatTime(date) {
+            const h = String(date.getHours()).padStart(2, '0');
+            const m = String(date.getMinutes()).padStart(2, '0');
+            const s = String(date.getSeconds()).padStart(2, '0');
+            return `${h}:${m}:${s}`;
+        }
+
+        function loadAntrian() {
+            fetch('load_antrian.php')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('tabel-antrian').innerHTML = data;
+
+                    // Update waktu terakhir refresh
+                    const now = new Date();
+                    document.getElementById('last-refresh').textContent = formatTime(now);
+                })
+                .catch(err => {
+                    document.getElementById('tabel-antrian').innerHTML =
+                        "<p class='no-data'>Gagal memuat data.</p>";
+                });
+        }
+
+        // Load pertama kali
+        loadAntrian();
+
+        // Refresh setiap 3 menit (180.000 ms)
+        setInterval(loadAntrian, 180000);
+    </script>
 </body>
 
 </html>
