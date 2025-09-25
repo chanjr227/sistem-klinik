@@ -96,13 +96,23 @@ $isLoggedIn = isset($_SESSION['user_id']);
                     <input type="text" id="no_hp" name="no_hp" maxlength="15" required>
                 </div>
 
+                <?php
+                include 'config/db.php'; // sesuaikan path kalau file ini ada di folder lain
+                $dokterQuery = $koneksi->query("SELECT id_dokter, nama, spesialisasi FROM dokter");
+                ?>
                 <div class="form-group">
                     <label for="dokter">Pilih Dokter</label>
                     <select id="dokter" name="id_dokter" required>
                         <option value="">-- Pilih Dokter --</option>
-                        <option value="1">Dr. Andi - Umum</option>
-                        <option value="2">Dr. Budi - Gigi</option>
-                        <option value="3">Dr. Sari - Anak</option>
+                        <?php if ($dokterQuery && $dokterQuery->num_rows > 0): ?>
+                            <?php while ($dokter = $dokterQuery->fetch_assoc()): ?>
+                                <option value="<?= $dokter['id_dokter'] ?>">
+                                    <?= $dokter['nama'] ?> <?= $dokter['spesialisasi'] ? "- " . $dokter['spesialisasi'] : "" ?>
+                                </option>
+                            <?php endwhile; ?>
+                        <?php else: ?>
+                            <option disabled>Tidak ada dokter tersedia</option>
+                        <?php endif; ?>
                     </select>
                 </div>
 
