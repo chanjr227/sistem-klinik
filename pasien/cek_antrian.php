@@ -9,18 +9,24 @@ require '../config/db.php';
     <title>Cek Antrian Pasien</title>
     <link rel="stylesheet" href="../assets/index.css">
     <style>
+        body {
+            background: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+
         .container {
-            max-width: 900px;
+            max-width: 800px;
             margin: 30px auto;
             background: #fff;
-            padding: 20px;
-            border-radius: 10px;
+            padding: 25px;
+            border-radius: 12px;
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
         }
 
         h2 {
             text-align: center;
             margin-bottom: 10px;
+            color: #007bff;
         }
 
         .refresh-info {
@@ -35,27 +41,41 @@ require '../config/db.php';
             color: #007bff;
         }
 
+        .refresh-btn {
+            display: inline-block;
+            background: #007bff;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            margin-bottom: 15px;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
-            text-align: left;
+            text-align: center;
         }
 
         table th,
         table td {
-            padding: 10px;
+            padding: 12px;
             border-bottom: 1px solid #ddd;
         }
 
         table th {
             background: #007bff;
             color: white;
+            font-size: 15px;
         }
 
         .no-data {
             text-align: center;
             font-style: italic;
             color: #888;
+            padding: 20px;
         }
     </style>
 </head>
@@ -63,11 +83,15 @@ require '../config/db.php';
 <body>
     <div class="container">
         <h2>Daftar Antrian Pasien</h2>
+
         <div class="refresh-info">
             Terakhir diperbarui: <span id="last-refresh">Memuat...</span>
         </div>
 
-        <!-- Tabel akan di-load lewat AJAX -->
+        <div style="text-align:center;">
+            <button class="refresh-btn" onclick="loadAntrian()">🔄 Refresh Sekarang</button>
+        </div>
+
         <div id="tabel-antrian">
             <p class="no-data">Memuat data antrian...</p>
         </div>
@@ -87,7 +111,6 @@ require '../config/db.php';
                 .then(data => {
                     document.getElementById('tabel-antrian').innerHTML = data;
 
-                    // Update waktu terakhir refresh
                     const now = new Date();
                     document.getElementById('last-refresh').textContent = formatTime(now);
                 })
@@ -97,11 +120,8 @@ require '../config/db.php';
                 });
         }
 
-        // Load pertama kali
         loadAntrian();
-
-        // Refresh setiap 3 menit (180.000 ms)
-        setInterval(loadAntrian, 180000);
+        setInterval(loadAntrian, 180000); // 3 menit
     </script>
 </body>
 
