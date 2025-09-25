@@ -73,13 +73,27 @@ $isLoggedIn = isset($_SESSION['user_id']);
                 </div>
 
                 <div class="form-group">
-                    <label for="nik">NIK</label>
-                    <input type="text" id="nik" name="nik" maxlength="16" required>
+                    <label for="tanggal_lahir">Tanggal Lahir</label>
+                    <input type="date" id="tanggal_lahir" name="tanggal_lahir" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="keluhan">Keluhan</label>
-                    <textarea id="keluhan" name="keluhan" required></textarea>
+                    <label for="jenis_kelamin">Jenis Kelamin</label>
+                    <select id="jenis_kelamin" name="jenis_kelamin" required>
+                        <option value="">-- Pilih --</option>
+                        <option value="L">Laki-laki</option>
+                        <option value="P">Perempuan</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="alamat">Alamat</label>
+                    <textarea id="alamat" name="alamat" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="no_hp">No HP</label>
+                    <input type="text" id="no_hp" name="no_hp" maxlength="15" required>
                 </div>
 
                 <div class="form-group">
@@ -96,6 +110,7 @@ $isLoggedIn = isset($_SESSION['user_id']);
             </form>
         </div>
     </div>
+
 
     <footer>
         <p>&copy; <?= date("Y") ?> Klinik Sehat. Semua Hak Dilindungi.</p>

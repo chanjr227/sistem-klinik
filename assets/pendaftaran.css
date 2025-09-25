@@ -1,70 +1,134 @@
-/* Modal Background */
+/* =========================
+   Modal Background
+========================= */
 .modal {
   display: none;
   position: fixed;
   z-index: 999;
-  left: 0;
   top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.6);
   justify-content: center;
   align-items: center;
-  transition: all 0.3s ease-in-out;
+  padding: 20px;
 }
 
-/* Modal Content */
+/* =========================
+   Modal Box
+========================= */
 .modal-content {
   background: #fff;
-  padding: 25px;
+  padding: 30px;
   border-radius: 12px;
-  max-width: 400px;
-  width: 90%;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  animation: fadeIn 0.3s ease;
+  width: 800px; /* Lebar lebih besar agar form terlihat horizontal */
+  max-width: 95%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease;
+  position: relative;
 }
 
-/* Close Button */
-.close {
-  float: right;
-  font-size: 24px;
-  cursor: pointer;
+/* Animasi Modal */
+@keyframes slideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Tombol Close */
+.modal-content .close {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 26px;
   color: #333;
+  cursor: pointer;
 }
-
-.close:hover {
+.modal-content .close:hover {
   color: red;
 }
 
-/* Form Style */
+/* =========================
+   Form Layout (2 Kolom)
+========================= */
+.modal-content form {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px 30px;
+  margin-top: 15px;
+}
+
+.modal-content h2,
+.modal-content p {
+  grid-column: span 2;
+  margin: 0 0 10px;
+  text-align: center;
+}
+
+/* Form Group */
 .form-group {
-  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
 }
 
 .form-group label {
-  display: block;
-  font-weight: bold;
+  font-weight: 600;
   margin-bottom: 5px;
 }
 
 .form-group input,
-.form-group textarea,
-.form-group select {
-  width: 100%;
+.form-group select,
+.form-group textarea {
   padding: 10px;
-  border: 1px solid #ccc;
   border-radius: 8px;
+  border: 1px solid #ccc;
   font-size: 14px;
 }
 
-/* Animasi */
-@keyframes fadeIn {
-  from {
-    transform: scale(0.95);
-    opacity: 0;
+/* Textarea dan Tombol Full Width */
+textarea#alamat,
+button[type="submit"] {
+  grid-column: span 2;
+}
+
+/* Tombol */
+button[type="submit"] {
+  padding: 12px;
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background: #0056b3;
+}
+
+/* =========================
+   Responsif
+========================= */
+@media (max-width: 700px) {
+  .modal-content {
+    width: 95%;
   }
-  to {
-    transform: scale(1);
-    opacity: 1;
+
+  .modal-content form {
+    grid-template-columns: 1fr;
+  }
+
+  textarea#alamat,
+  button[type="submit"] {
+    grid-column: span 1;
   }
 }
