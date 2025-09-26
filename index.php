@@ -1,6 +1,7 @@
 <?php
 session_start();
-$isLoggedIn = isset($_SESSION['user_id']);
+$isLoggedInAdmin = isset($_SESSION['user_id']);
+$isLoggedInPasien = isset($_SESSION['pasien_id']);
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -8,9 +9,7 @@ $isLoggedIn = isset($_SESSION['user_id']);
 <head>
     <meta charset="UTF-8">
     <title>Klinik Sehat - Sistem Manajemen Klinik</title>
-    <!-- CSS utama -->
     <link rel="stylesheet" href="assets/index.css">
-    <!-- CSS modal -->
     <link rel="stylesheet" href="assets/pendaftaran.css">
 </head>
 
@@ -23,12 +22,21 @@ $isLoggedIn = isset($_SESSION['user_id']);
         <nav>
             <a href="index.php" class="active">Beranda</a>
             <a href="pasien/cek_antrian.php">Cek Antrian</a>
-            <?php if ($isLoggedIn): ?>
+
+            <?php if ($isLoggedInPasien): ?>
+                <span class="welcome">Halo, <?= htmlspecialchars($_SESSION['pasien_nama']) ?></span>
+                <a href="pasien/auth/logout.php" class="logout-btn">Logout</a>
+            <?php else: ?>
+                <a href="pasien/auth/login.php" class="login-btn">Login Pasien</a>
+            <?php endif; ?>
+
+            <?php if ($isLoggedInAdmin): ?>
                 <a href="dashboard.php">Dashboard Admin</a>
-                <a href="auth/logout.php" class="logout-btn">Logout</a>
+                <a href="auth/logout.php" class="logout-btn">Logout Admin</a>
             <?php else: ?>
                 <a href="auth/login.php" class="login-btn">Login Admin</a>
             <?php endif; ?>
+
             <button class="toggle-dark" id="darkToggle">🌙</button>
         </nav>
     </header>
@@ -38,7 +46,6 @@ $isLoggedIn = isset($_SESSION['user_id']);
             <h2>Selamat Datang di Klinik Sehat</h2>
             <p>Kami hadir untuk memberikan pelayanan kesehatan terbaik dengan sistem manajemen modern.</p>
             <div class="cta-buttons">
-                <!-- Tombol akan membuka modal -->
                 <a href="#" class="btn-primary" id="openModalBtn">Daftar Antrian Pasien</a>
             </div>
         </div>
@@ -69,7 +76,7 @@ $isLoggedIn = isset($_SESSION['user_id']);
             <form action="pasien/proses_pendaftaran.php" method="POST">
                 <div class="form-group">
                     <label for="nama">Nama Pasien</label>
-                    <input type="text" id="nama" name="nama" required>
+                    <input type="text" id="nama" name="nama" value="<?= htmlspecialchars($_SESSION['pasien_nama'] ?? '') ?>" required>
                 </div>
 
                 <div class="form-group">
@@ -97,7 +104,7 @@ $isLoggedIn = isset($_SESSION['user_id']);
                 </div>
 
                 <?php
-                include 'config/db.php'; // sesuaikan path kalau file ini ada di folder lain
+                include 'config/db.php';
                 $dokterQuery = $koneksi->query("SELECT id_dokter, nama, spesialisasi FROM dokter");
                 ?>
                 <div class="form-group">
@@ -121,7 +128,6 @@ $isLoggedIn = isset($_SESSION['user_id']);
         </div>
     </div>
 
-
     <footer>
         <p>&copy; <?= date("Y") ?> Klinik Sehat. Semua Hak Dilindungi.</p>
     </footer>
@@ -130,12 +136,10 @@ $isLoggedIn = isset($_SESSION['user_id']);
         // Dark Mode Toggle
         const toggle = document.getElementById('darkToggle');
         const body = document.body;
-
         if (localStorage.getItem('dark-mode') === 'enabled') {
             body.classList.add('dark-mode');
             toggle.textContent = "☀️";
         }
-
         toggle.addEventListener('click', () => {
             body.classList.toggle('dark-mode');
             if (body.classList.contains('dark-mode')) {
@@ -151,10 +155,15 @@ $isLoggedIn = isset($_SESSION['user_id']);
         const modal = document.getElementById("pendaftaranModal");
         const openBtn = document.getElementById("openModalBtn");
         const closeBtn = document.getElementById("closeModal");
+        const pasienLoggedIn = <?= $isLoggedInPasien ? 'true' : 'false' ?>;
 
         openBtn.addEventListener("click", (e) => {
             e.preventDefault();
-            modal.style.display = "flex";
+            if (pasienLoggedIn) {
+                modal.style.display = "flex";
+            } else {
+                window.location.href = "pasien/auth/login.php";
+            }
         });
 
         closeBtn.addEventListener("click", () => {

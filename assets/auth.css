@@ -1,0 +1,113 @@
+/* === GLOBAL STYLE === */
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #00b4d8, #0077b6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* === CONTAINER LOGIN === */
+.auth-container {
+  background: #fff;
+  width: 100%;
+  max-width: 400px;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+.auth-container h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  color: #0077b6;
+}
+
+/* === FORM === */
+.auth-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.auth-container input {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.auth-container input:focus {
+  border-color: #00b4d8;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 180, 216, 0.3);
+}
+
+.auth-container button {
+  padding: 12px;
+  background: #0077b6;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.auth-container button:hover {
+  background: #023e8a;
+  transform: scale(1.02);
+}
+
+/* === PESAN ERROR === */
+.error {
+  background: #ffdddd;
+  color: #d90429;
+  border: 1px solid #d90429;
+  padding: 0.5rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+/* === LINK REGISTER === */
+.auth-container p {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.auth-container a {
+  color: #0077b6;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.auth-container a:hover {
+  text-decoration: underline;
+}
+
+/* === ANIMASI MASUK === */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 480px) {
+  .auth-container {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+}
