@@ -1,5 +1,13 @@
 <?php
+session_start();
 require '../config/db.php';
+
+// 🔒 Cek apakah pasien sudah login
+if (!isset($_SESSION['pasien_id'])) {
+    // Redirect ke login pasien
+    header("Location: ../pasien/auth/login.php?redirect=cek_antrian");
+    exit;
+}
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -51,6 +59,11 @@ require '../config/db.php';
             cursor: pointer;
             text-decoration: none;
             margin-bottom: 15px;
+            transition: background 0.2s ease-in-out;
+        }
+
+        .refresh-btn:hover {
+            background: #0056b3;
         }
 
         table {
@@ -114,7 +127,7 @@ require '../config/db.php';
                     const now = new Date();
                     document.getElementById('last-refresh').textContent = formatTime(now);
                 })
-                .catch(err => {
+                .catch(() => {
                     document.getElementById('tabel-antrian').innerHTML =
                         "<p class='no-data'>Gagal memuat data.</p>";
                 });
