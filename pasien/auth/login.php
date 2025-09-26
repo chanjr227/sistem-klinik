@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="password" name="password" placeholder="Password" required>
             <button type="submit">Login</button>
         </form>
-        <p>Belum punya akun? <a href="register.php">Daftar di sini</a></p>
+        <p>Belum punya akun? <a href="./registrasi.php">Daftar di sini</a></p>
     </div>
 </body>
 
