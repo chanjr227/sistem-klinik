@@ -11,6 +11,50 @@ $isLoggedInPasien = isset($_SESSION['pasien_id']);
     <title>Klinik Sehat - Sistem Manajemen Klinik</title>
     <link rel="stylesheet" href="assets/index.css">
     <link rel="stylesheet" href="assets/pendaftaran.css">
+    <style>
+        /* Responsif Modal */
+        @media (max-width: 600px) {
+            .modal-content {
+                width: 95%;
+                padding: 15px;
+            }
+        }
+
+        /* Tambahan tombol batal */
+        .btn-secondary {
+            background: #ccc;
+            color: #000;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .btn-secondary:hover {
+            background: #aaa;
+        }
+
+        /* Flash message */
+        .alert {
+            margin: 10px auto;
+            padding: 10px;
+            border-radius: 6px;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .alert.success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .alert.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+    </style>
 </head>
 
 <body>
@@ -20,10 +64,10 @@ $isLoggedInPasien = isset($_SESSION['pasien_id']);
             <h1>Klinik Sehat</h1>
         </div>
         <nav>
-            <a href="index.php" class="active">Beranda</a>
-            <a href="pasien/cek_antrian.php">Cek Antrian</a>
-            <a href="pasien/riwayat.php">Riwayat Kunjungan</a>
-
+            <a href="index.php" class="<?= basename($_SERVER['PHP_SELF']) == 'index.php' ? 'active' : '' ?>">Beranda</a>
+            <a href="pasien/cek_antrian.php" class="<?= basename($_SERVER['PHP_SELF']) == 'cek_antrian.php' ? 'active' : '' ?>">Cek Antrian</a>
+            <a href="pasien/riwayat.php" class="<?= basename($_SERVER['PHP_SELF']) == 'riwayat.php' ? 'active' : '' ?>">Riwayat Kunjungan</a>
+            <a href="pasien/jadwal_dokter.php" class="<?= basename($_SERVER['PHP_SELF']) == 'jadwal_dokter.php' ? 'active' : '' ?>">Jadwal Dokter</a>
 
             <?php if ($isLoggedInPasien): ?>
                 <span class="welcome">Halo, <?= htmlspecialchars($_SESSION['pasien_nama']) ?></span>
@@ -42,6 +86,13 @@ $isLoggedInPasien = isset($_SESSION['pasien_id']);
             <button class="toggle-dark" id="darkToggle">🌙</button>
         </nav>
     </header>
+
+    <?php if (isset($_SESSION['flash_message'])): ?>
+        <div class="alert <?= $_SESSION['flash_type'] ?? 'success' ?>">
+            <?= $_SESSION['flash_message'] ?>
+        </div>
+        <?php unset($_SESSION['flash_message'], $_SESSION['flash_type']); ?>
+    <?php endif; ?>
 
     <section class="hero">
         <div class="hero-content">
@@ -102,7 +153,7 @@ $isLoggedInPasien = isset($_SESSION['pasien_id']);
 
                 <div class="form-group">
                     <label for="no_hp">No HP</label>
-                    <input type="text" id="no_hp" name="no_hp" maxlength="15" required>
+                    <input type="text" id="no_hp" name="no_hp" maxlength="15" pattern="[0-9]+" title="Hanya angka yang diperbolehkan" required>
                 </div>
 
                 <?php
@@ -126,6 +177,7 @@ $isLoggedInPasien = isset($_SESSION['pasien_id']);
                 </div>
 
                 <button type="submit" class="btn-primary">Daftar Sekarang</button>
+                <button type="button" class="btn-secondary" id="cancelModal">Batal</button>
             </form>
         </div>
     </div>
@@ -157,25 +209,24 @@ $isLoggedInPasien = isset($_SESSION['pasien_id']);
         const modal = document.getElementById("pendaftaranModal");
         const openBtn = document.getElementById("openModalBtn");
         const closeBtn = document.getElementById("closeModal");
+        const cancelBtn = document.getElementById("cancelModal");
         const pasienLoggedIn = <?= $isLoggedInPasien ? 'true' : 'false' ?>;
 
         openBtn.addEventListener("click", (e) => {
             e.preventDefault();
             if (pasienLoggedIn) {
                 modal.style.display = "flex";
+                document.getElementById("nama").focus();
             } else {
                 window.location.href = "pasien/auth/login.php";
             }
         });
 
-        closeBtn.addEventListener("click", () => {
-            modal.style.display = "none";
-        });
+        closeBtn.addEventListener("click", () => modal.style.display = "none");
+        cancelBtn.addEventListener("click", () => modal.style.display = "none");
 
         window.addEventListener("click", (e) => {
-            if (e.target === modal) {
-                modal.style.display = "none";
-            }
+            if (e.target === modal) modal.style.display = "none";
         });
     </script>
 </body>

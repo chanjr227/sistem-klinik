@@ -1,4 +1,5 @@
 <?php
+session_start();
 include '../config/db.php';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -15,11 +16,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $stmt->bind_param("sssssi", $nama, $tanggal_lahir, $jenis_kelamin, $alamat, $no_hp, $id_dokter);
 
     if ($stmt->execute()) {
-        echo "<script>alert('Pendaftaran berhasil!'); window.location.href='../index.php';</script>";
+        $_SESSION['flash_message'] = "Pendaftaran berhasil! Anda masuk dalam antrian.";
+        $_SESSION['flash_type'] = "success"; // bisa 'success' atau 'error'
     } else {
-        echo "Terjadi kesalahan: " . $koneksi->error;
+        $_SESSION['flash_message'] = "Terjadi kesalahan: " . $koneksi->error;
+        $_SESSION['flash_type'] = "error";
     }
 
     $stmt->close();
     $koneksi->close();
+
+    header("Location: ../index.php");
+    exit;
 }
