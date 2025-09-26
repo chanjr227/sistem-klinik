@@ -22,6 +22,8 @@ $isLoggedInPasien = isset($_SESSION['pasien_id']);
         <nav>
             <a href="index.php" class="active">Beranda</a>
             <a href="pasien/cek_antrian.php">Cek Antrian</a>
+            <a href="pasien/riwayat.php">Riwayat Kunjungan</a>
+
 
             <?php if ($isLoggedInPasien): ?>
                 <span class="welcome">Halo, <?= htmlspecialchars($_SESSION['pasien_nama']) ?></span>
