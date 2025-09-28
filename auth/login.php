@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($username === 'admin' && $password === 'admin123') {
         $_SESSION['user_id'] = 1;
         $_SESSION['username'] = $username;
-        header('Location: /klinik/dashboard.php');
+        header('Location: ../admin/dashboard.php');
         exit;
     } else {
         $error = "Username atau password salah!";
