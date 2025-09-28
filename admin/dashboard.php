@@ -12,6 +12,7 @@ if (!isset($_SESSION['user_id'])) {
     <meta charset="UTF-8">
     <title>Dashboard Admin - Klinik Sehat</title>
     <link rel="stylesheet" href="assets/dashboard.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
@@ -41,29 +42,29 @@ if (!isset($_SESSION['user_id'])) {
             <section class="cards">
                 <div class="card">
                     <h3>Total Pasien</h3>
-                    <p>120</p>
+                    <p class="number">120</p>
                 </div>
                 <div class="card">
                     <h3>Dokter Aktif</h3>
-                    <p>8</p>
+                    <p class="number">8</p>
                 </div>
                 <div class="card">
                     <h3>Antrian Hari Ini</h3>
-                    <p>35</p>
+                    <p class="number">35</p>
                 </div>
             </section>
 
             <section class="chart-section">
                 <h2>Statistik Kunjungan</h2>
                 <div class="chart-placeholder">
-                    (Chart bisa ditambahkan di sini pakai Chart.js)
+                    <p>📊 Chart akan tampil di sini (gunakan Chart.js)</p>
                 </div>
             </section>
         </main>
     </div>
 
     <script>
-        // Sidebar toggle for mobile (optional)
+        // Sidebar toggle for mobile
         document.querySelector('.sidebar-header').addEventListener('click', () => {
             document.querySelector('.sidebar').classList.toggle('collapsed');
         });
