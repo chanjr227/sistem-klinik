@@ -235,3 +235,84 @@ body {
     padding: 1rem;
   }
 }
+
+/* DARK MODE */
+body.dark {
+  background: #1e1e2f;
+  color: #ddd;
+}
+
+body.dark .sidebar {
+  background: #1a1a28;
+  color: #fff;
+}
+
+body.dark .sidebar-header {
+  background: #11111a;
+}
+
+body.dark .sidebar-menu li a {
+  color: #aaa;
+}
+
+body.dark .sidebar-menu li a.active,
+body.dark .sidebar-menu li a:hover {
+  background: #252538;
+  color: #fff;
+}
+
+body.dark .content-header h1,
+body.dark .content-header p {
+  color: #ddd;
+}
+
+body.dark .card {
+  background: #2a2a3d;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+body.dark .card h3 {
+  color: #bbb;
+}
+
+body.dark .card .number {
+  color: #fff;
+}
+
+body.dark .chart-section {
+  background: #2a2a3d;
+  color: #ddd;
+}
+
+body.dark .chart-placeholder {
+  background: #1e1e2f;
+  border-color: #444;
+  color: #bbb;
+}
+
+body.dark .form-admin {
+  background: #2a2a3d;
+}
+
+body.dark .form-admin input,
+body.dark .form-admin select {
+  background: #1e1e2f;
+  color: #fff;
+  border-color: #555;
+}
+
+.dark-btn {
+  background: #2d89ef;
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-top: 10px;
+  transition: background 0.3s ease;
+}
+
+.dark-btn:hover {
+  background: #1a6ad9;
+}

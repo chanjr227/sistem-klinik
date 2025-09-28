@@ -41,6 +41,7 @@ if (!isset($_SESSION['user_id'])) {
                 <div>
                     <h1>Selamat Datang, <?= htmlspecialchars($_SESSION['username']) ?></h1>
                     <p>Kelola klinik Anda dengan mudah dari dashboard ini.</p>
+                    <button id="darkToggle" class="dark-btn">🌙 Dark Mode</button>
                 </div>
             </header>
 
@@ -100,6 +101,26 @@ if (!isset($_SESSION['user_id'])) {
                         beginAtZero: true
                     }
                 }
+            }
+        });
+
+        const body = document.body;
+        const toggleBtn = document.getElementById('darkToggle');
+
+        // Cek localStorage saat halaman dibuka
+        if (localStorage.getItem('theme') === 'dark') {
+            body.classList.add('dark');
+            toggleBtn.textContent = "☀️ Light Mode";
+        }
+
+        toggleBtn.addEventListener('click', () => {
+            body.classList.toggle('dark');
+            if (body.classList.contains('dark')) {
+                localStorage.setItem('theme', 'dark');
+                toggleBtn.textContent = "☀️ Light Mode";
+            } else {
+                localStorage.setItem('theme', 'light');
+                toggleBtn.textContent = "🌙 Dark Mode";
             }
         });
     </script>
