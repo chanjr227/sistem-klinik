@@ -22,16 +22,16 @@ if (!isset($_SESSION['user_id'])) {
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-header">
-                <h2>🏥 Klinik Sehat</h2>
+                <h2>Klinik Sehat</h2>
             </div>
             <ul class="sidebar-menu">
-                <li><a href="dashboard.php" class="active">🏠 Dashboard</a></li>
-                <li><a href="../pasien/list.php">👥 Data Pasien</a></li>
-                <li><a href="../dokter/list.php">🩺 Data Dokter</a></li>
-                <li><a href="../antrian/list.php">📋 Antrian</a></li>
-                <li><a href="tambah_admin.php">➕ Tambah Akun</a></li>
-                <li><a href="../laporan/index.php">📊 Laporan</a></li>
-                <li><a href="../auth/logout.php" class="logout">🚪 Logout</a></li>
+                <li><a href="dashboard.php" class="active"> Dashboard</a></li>
+                <li><a href="../pasien/list.php"> Data Pasien</a></li>
+                <li><a href="../dokter/list.php"> Data Dokter</a></li>
+                <li><a href="../antrian/list.php"> Antrian</a></li>
+                <li><a href="tambah_admin.php"> Tambah Akun</a></li>
+                <li><a href="../laporan/index.php"> Laporan</a></li>
+                <li><a href="../auth/logout.php" class="logout"> Logout</a></li>
             </ul>
         </aside>
 
@@ -39,7 +39,7 @@ if (!isset($_SESSION['user_id'])) {
         <main class="content">
             <header class="content-header">
                 <div>
-                    <h1>Selamat Datang, <?= htmlspecialchars($_SESSION['username']) ?> 👋</h1>
+                    <h1>Selamat Datang, <?= htmlspecialchars($_SESSION['username']) ?></h1>
                     <p>Kelola klinik Anda dengan mudah dari dashboard ini.</p>
                 </div>
             </header>
