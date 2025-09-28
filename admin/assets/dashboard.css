@@ -141,3 +141,43 @@ body {
   color: #888;
   font-size: 0.9rem;
 }
+
+.form-admin {
+  max-width: 400px;
+  background: #fff;
+  padding: 20px;
+  margin: 20px auto;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-admin input,
+.form-admin select {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.form-admin button {
+  background: #2d89ef;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.form-admin button:hover {
+  background: #1a6ad9;
+}
+
+.error {
+  color: red;
+}
+.success {
+  color: green;
+}
