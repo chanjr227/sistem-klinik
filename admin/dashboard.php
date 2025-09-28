@@ -26,7 +26,7 @@ if (!isset($_SESSION['user_id'])) {
             </div>
             <ul class="sidebar-menu">
                 <li><a href="dashboard.php" class="active"> Dashboard</a></li>
-                <li><a href="../pasien/list.php"> Data Pasien</a></li>
+                <li><a href="data_pasien.php"> Data Pasien</a></li>
                 <li><a href="../dokter/list.php"> Data Dokter</a></li>
                 <li><a href="../antrian/list.php"> Antrian</a></li>
                 <li><a href="tambah_admin.php"> Tambah Akun</a></li>
