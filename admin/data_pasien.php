@@ -31,11 +31,11 @@ $result = $koneksi->query("SELECT p.id_pasien, p.nama, p.tanggal_lahir, p.jenis_
             </div>
             <ul class="sidebar-menu">
                 <li><a href="dashboard.php">Dashboard</a></li>
-                <li><a href="list.php" class="active">👥 Data Pasien</a></li>
-                <li><a href="../dokter/list.php">🩺 Data Dokter</a></li>
-                <li><a href="../antrian/list.php">📋 Antrian</a></li>
-                <li><a href="../laporan/index.php">📊 Laporan</a></li>
-                <li><a href="../auth/logout.php" class="logout">🚪 Logout</a></li>
+                <li><a href="list.php" class="active">Data Pasien</a></li>
+                <li><a href="../dokter/list.php">Data Dokter</a></li>
+                <li><a href="../antrian/list.php">Antrian</a></li>
+                <li><a href="../laporan/index.php">Laporan</a></li>
+                <li><a href="../auth/logout.php" class="logout">Logout</a></li>
             </ul>
         </aside>
 
