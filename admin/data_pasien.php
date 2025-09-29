@@ -30,7 +30,7 @@ $result = $koneksi->query("SELECT p.id_pasien, p.nama, p.tanggal_lahir, p.jenis_
                 <h2>Klinik Sehat</h2>
             </div>
             <ul class="sidebar-menu">
-                <li><a href="../dashboard.php">🏠 Dashboard</a></li>
+                <li><a href="dashboard.php">Dashboard</a></li>
                 <li><a href="list.php" class="active">👥 Data Pasien</a></li>
                 <li><a href="../dokter/list.php">🩺 Data Dokter</a></li>
                 <li><a href="../antrian/list.php">📋 Antrian</a></li>
