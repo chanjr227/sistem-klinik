@@ -4,7 +4,7 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: ../auth/login.php");
     exit;
 }
-include '../config/db.php';
+include '../../config/db.php';
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -12,7 +12,8 @@ include '../config/db.php';
 <head>
     <meta charset="UTF-8">
     <title>Data Dokter - Klinik Sehat</title>
-    <link rel="stylesheet" href="assets/data_dokter.css">
+    <link rel="stylesheet" href="../assets/dokter.css">
+    <link rel="stylesheet" href="../assets/dashboard.css">
 </head>
 
 <body>
@@ -36,11 +37,11 @@ include '../config/db.php';
         <main class="content">
             <header class="content-header">
                 <h1>Data Dokter</h1>
-                <a href="tambah_dokter.php" class="btn-primary">+ Tambah Dokter</a>
+                <a href="tambah_dokter.php" class="btn-tambah">Tambah Dokter</a>
             </header>
 
             <section class="table-section">
-                <table>
+                <table class="data-table">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -75,6 +76,7 @@ include '../config/db.php';
                     </tbody>
                 </table>
             </section>
+
         </main>
     </div>
 </body>
