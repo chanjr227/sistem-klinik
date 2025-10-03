@@ -86,39 +86,44 @@ include '../../config/db.php';
     </div>
 
     <!-- Modal Edit -->
+    <!-- Modal Edit -->
     <div id="editModal" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
+            <span class="close-btn" onclick="closeModal()">&times;</span>
             <h2>Edit Dokter</h2>
-            <form id="editForm" method="POST" action="update_dokter.php">
-                <input type="hidden" name="id_dokter" id="editId">
-                <input type="text" name="nama" id="editNama" placeholder="Nama Dokter" required>
-                <input type="text" name="spesialisasi" id="editSpesialisasi" placeholder="Spesialisasi">
-                <input type="text" name="jadwal_praktik" id="editJadwal" placeholder="Jadwal Praktik">
+            <form action="update_dokter.php" method="POST">
+                <input type="hidden" id="editId" name="id_dokter">
+
+                <label>Nama Dokter</label>
+                <input type="text" id="editNama" name="nama" required>
+
+                <label>Spesialisasi</label>
+                <input type="text" id="editSpesialisasi" name="spesialisasi">
+
+                <label>Jadwal Praktik</label>
+                <input type="text" id="editJadwal" name="jadwal_praktik">
+
                 <button type="submit">Update</button>
             </form>
         </div>
     </div>
+
     <script>
         function openModal(id, nama, spesialisasi, jadwal) {
-            // isi data ke form
+            document.getElementById("editModal").style.display = "flex";
             document.getElementById("editId").value = id;
             document.getElementById("editNama").value = nama;
             document.getElementById("editSpesialisasi").value = spesialisasi;
             document.getElementById("editJadwal").value = jadwal;
-
-            // tampilkan modal
-            document.getElementById("editModal").style.display = "flex";
         }
 
         function closeModal() {
             document.getElementById("editModal").style.display = "none";
         }
 
-        // Tutup modal kalau klik di luar area
         window.onclick = function(event) {
             let modal = document.getElementById("editModal");
-            if (event.target === modal) {
+            if (event.target == modal) {
                 closeModal();
             }
         }
