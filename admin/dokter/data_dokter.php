@@ -27,9 +27,10 @@ include '../../config/db.php';
                 <li><a href="../dashboard.php">Dashboard</a></li>
                 <li><a href="../data_pasien.php">Data Pasien</a></li>
                 <li><a href="data_dokter.php" class="active">Data Dokter</a></li>
-                <li><a href="../antrian/list.php">📋 Antrian</a></li>
-                <li><a href="../laporan/index.php">📊 Laporan</a></li>
-                <li><a href="../logout.php" class="logout">🚪 Logout</a></li>
+                <li><a href="../antrian/list.php">Antrian</a></li>
+                <li><a href="../tambah_admin.php">Tambah akun</a></li>
+                <li><a href="../laporan/index.php">Laporan</a></li>
+                <li><a href="../logout.php" class="logout">Logout</a></li>
             </ul>
         </aside>
 
