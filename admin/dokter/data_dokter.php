@@ -12,8 +12,8 @@ include '../../config/db.php';
 <head>
     <meta charset="UTF-8">
     <title>Data Dokter - Klinik Sehat</title>
-    <link rel="stylesheet" href="../assets/dokter.css">
     <link rel="stylesheet" href="../assets/dashboard.css">
+    <link rel="stylesheet" href="../assets/dokter.css">
 </head>
 
 <body>
@@ -29,7 +29,7 @@ include '../../config/db.php';
                 <li><a href="data_dokter.php" class="active">Data Dokter</a></li>
                 <li><a href="../antrian/list.php">📋 Antrian</a></li>
                 <li><a href="../laporan/index.php">📊 Laporan</a></li>
-                <li><a href="../auth/logout.php" class="logout">🚪 Logout</a></li>
+                <li><a href="../logout.php" class="logout">🚪 Logout</a></li>
             </ul>
         </aside>
 
@@ -63,7 +63,13 @@ include '../../config/db.php';
                                     <td><?= htmlspecialchars($row['spesialisasi'] ?? '-') ?></td>
                                     <td><?= htmlspecialchars($row['jadwal_praktik'] ?? '-') ?></td>
                                     <td>
-                                        <a href="edit_dokter.php?id=<?= $row['id_dokter'] ?>" class="btn-edit">Edit</a>
+                                        <button class="btn-edit"
+                                            onclick="openModal(
+                                                '<?= $row['id_dokter'] ?>',
+                                                '<?= htmlspecialchars($row['nama']) ?>',
+                                                '<?= htmlspecialchars($row['spesialisasi']) ?>',
+                                                '<?= htmlspecialchars($row['jadwal_praktik']) ?>'
+                                            )">Edit</button>
                                         <a href="hapus_dokter.php?id=<?= $row['id_dokter'] ?>" class="btn-delete" onclick="return confirm('Yakin hapus dokter ini?')">Hapus</a>
                                     </td>
                                 </tr>
@@ -76,9 +82,49 @@ include '../../config/db.php';
                     </tbody>
                 </table>
             </section>
-
         </main>
     </div>
+
+    <!-- Modal Edit -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Edit Dokter</h2>
+            <form id="editForm" method="POST" action="update_dokter.php">
+                <input type="hidden" name="id_dokter" id="editId">
+                <input type="text" name="nama" id="editNama" placeholder="Nama Dokter" required>
+                <input type="text" name="spesialisasi" id="editSpesialisasi" placeholder="Spesialisasi">
+                <input type="text" name="jadwal_praktik" id="editJadwal" placeholder="Jadwal Praktik">
+                <button type="submit">Update</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        function openModal(id, nama, spesialisasi, jadwal) {
+            // isi data ke form
+            document.getElementById("editId").value = id;
+            document.getElementById("editNama").value = nama;
+            document.getElementById("editSpesialisasi").value = spesialisasi;
+            document.getElementById("editJadwal").value = jadwal;
+
+            // tampilkan modal
+            document.getElementById("editModal").style.display = "flex";
+        }
+
+        function closeModal() {
+            document.getElementById("editModal").style.display = "none";
+        }
+
+        // Tutup modal kalau klik di luar area
+        window.onclick = function(event) {
+            let modal = document.getElementById("editModal");
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+    </script>
+
+
 </body>
 
 </html>
