@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Tambah Dokter</title>
-    <link rel="stylesheet" href="assets/form.css">
+    <link rel="stylesheet" href="../assets/tambah_dokter.css">
 </head>
 
 <body>
