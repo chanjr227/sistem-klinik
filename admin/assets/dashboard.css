@@ -316,3 +316,40 @@ body.dark .form-admin select {
 .dark-btn:hover {
   background: #1a6ad9;
 }
+
+/* Default submenu hidden */
+.sidebar-menu .submenu {
+  display: none;
+  list-style: none;
+  padding-left: 15px;
+  margin: 5px 0;
+}
+
+/* Style submenu item */
+.sidebar-menu .submenu li a {
+  font-size: 14px;
+  color: #ddd;
+  display: block;
+  padding: 6px 10px;
+  border-radius: 4px;
+  transition: background 0.3s;
+}
+
+.sidebar-menu .submenu li a:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Saat parent .open -> tampil */
+.sidebar-menu li.open > .submenu {
+  display: block;
+}
+
+/* Pastikan submenu hidden dulu */
+.has-submenu .submenu {
+  display: none;
+}
+
+/* Kalau parent open -> tampil */
+.has-submenu.open .submenu {
+  display: block;
+}
