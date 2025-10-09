@@ -12,10 +12,13 @@ if (!isset($_SESSION['user_id'])) {
     <meta charset="UTF-8">
     <title>Dashboard Admin - Klinik Sehat</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="assets/dashboard.css">
+    <!-- Font & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <!-- CSS -->
+    <link rel="stylesheet" href="assets/dashboard.css">
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 </head>
 
 <body>
@@ -23,24 +26,29 @@ if (!isset($_SESSION['user_id'])) {
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-header">
-                <h2>Klinik Sehat</h2>
+                <i class="fa-solid fa-hospital-user"></i>
+                <span>Klinik Sehat</span>
             </div>
-            <ul class="sidebar-menu">
-                <li><a href="dashboard.php" class="active"> Dashboard</a></li>
-                <li><a href="data_pasien.php"> Data Pasien</a></li>
 
-                <!-- Menu Dokter dengan Submenu -->
+            <ul class="sidebar-menu">
+                <li><a href="dashboard.php" class="active"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
+                <li><a href="data_pasien.php"><i class="fa-solid fa-users"></i> Data Pasien</a></li>
+
                 <li class="has-submenu">
-                    <a href="#"> Data Dokter ▸</a>
+                    <a href="#" class="submenu-toggle">
+                        <i class="fa-solid fa-user-doctor"></i>
+                        Data Dokter
+                        <i class="fa-solid fa-angle-right arrow"></i>
+                    </a>
                     <ul class="submenu">
                         <li><a href="../admin/dokter/data_dokter.php">Lihat Data Dokter</a></li>
                     </ul>
                 </li>
 
-                <li><a href="../antrian/list.php"> Antrian</a></li>
-                <li><a href="tambah_admin.php"> Tambah Akun</a></li>
-                <li><a href="../laporan/index.php"> Laporan</a></li>
-                <li><a href="logout.php" class="logout"> Logout</a></li>
+                <li><a href="../antrian/list.php"><i class="fa-solid fa-list"></i> Antrian</a></li>
+                <li><a href="tambah_admin.php"><i class="fa-solid fa-user-plus"></i> Tambah Akun</a></li>
+                <li><a href="../laporan/index.php"><i class="fa-solid fa-file-lines"></i> Laporan</a></li>
+                <li><a href="logout.php" class="logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
             </ul>
         </aside>
 
@@ -77,12 +85,43 @@ if (!isset($_SESSION['user_id'])) {
     </div>
 
     <script>
-        // Sidebar toggle (mobile)
-        document.querySelector('.sidebar-header').addEventListener('click', () => {
-            document.querySelector('.sidebar').classList.toggle('collapsed');
+        // === DARK MODE TOGGLE ===
+        const body = document.body;
+        const toggleBtn = document.getElementById('darkToggle');
+
+        if (localStorage.getItem('theme') === 'dark') {
+            body.classList.add('dark');
+            toggleBtn.textContent = "☀️ Light Mode";
+        }
+
+        toggleBtn.addEventListener('click', () => {
+            body.classList.toggle('dark');
+            if (body.classList.contains('dark')) {
+                localStorage.setItem('theme', 'dark');
+                toggleBtn.textContent = "☀️ Light Mode";
+            } else {
+                localStorage.setItem('theme', 'light');
+                toggleBtn.textContent = "🌙 Dark Mode";
+            }
         });
 
-        // Chart.js Example
+        // === SUBMENU TOGGLE ===
+        document.querySelectorAll(".submenu-toggle").forEach(menu => {
+            menu.addEventListener("click", function(e) {
+                e.preventDefault();
+                const parent = this.parentElement;
+                parent.classList.toggle("open");
+
+                const arrow = this.querySelector(".arrow");
+                if (parent.classList.contains("open")) {
+                    arrow.style.transform = "rotate(90deg)";
+                } else {
+                    arrow.style.transform = "rotate(0deg)";
+                }
+            });
+        });
+
+        // === CHART.JS ===
         const ctx = document.getElementById('kunjunganChart');
         new Chart(ctx, {
             type: 'line',
@@ -111,42 +150,6 @@ if (!isset($_SESSION['user_id'])) {
                     }
                 }
             }
-        });
-
-        const body = document.body;
-        const toggleBtn = document.getElementById('darkToggle');
-
-        // Dark mode toggle
-        if (localStorage.getItem('theme') === 'dark') {
-            body.classList.add('dark');
-            toggleBtn.textContent = "☀️ Light Mode";
-        }
-
-        toggleBtn.addEventListener('click', () => {
-            body.classList.toggle('dark');
-            if (body.classList.contains('dark')) {
-                localStorage.setItem('theme', 'dark');
-                toggleBtn.textContent = "☀️ Light Mode";
-            } else {
-                localStorage.setItem('theme', 'light');
-                toggleBtn.textContent = "🌙 Dark Mode";
-            }
-        });
-
-        // Toggle submenu
-        document.querySelectorAll(".has-submenu > a").forEach(menu => {
-            menu.addEventListener("click", function(e) {
-                e.preventDefault();
-                const parent = this.parentElement;
-                parent.classList.toggle("open");
-
-                // Ubah panah
-                if (parent.classList.contains("open")) {
-                    this.innerHTML = "Data Dokter ▾";
-                } else {
-                    this.innerHTML = "Data Dokter ▸";
-                }
-            });
         });
     </script>
 </body>
