@@ -71,7 +71,7 @@ include '../../config/db.php';
                 <li class="has-submenu">
                     <a href="#"> Data Dokter ▸</a>
                     <ul class="submenu">
-                        <li><a href="../admin/dokter/data_dokter.php">Lihat Data Dokter</a></li>
+                        <li><a href="/admin/dokter/data_dokter.php">Lihat Data Dokter</a></li>
                     </ul>
                 </li>
 
