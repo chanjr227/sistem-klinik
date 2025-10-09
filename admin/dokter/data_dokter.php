@@ -64,8 +64,8 @@ include '../../config/db.php';
                 <h2>Klinik Sehat</h2>
             </div>
             <ul class="sidebar-menu">
-                <li><a href="dashboard.php" class="active"> Dashboard</a></li>
-                <li><a href="data_pasien.php"> Data Pasien</a></li>
+                <li><a href="../dashboard.php" class="active"> Dashboard</a></li>
+                <li><a href="../data_pasien.php"> Data Pasien</a></li>
 
                 <!-- Menu Dokter dengan Submenu -->
                 <li class="has-submenu">
@@ -76,9 +76,9 @@ include '../../config/db.php';
                 </li>
 
                 <li><a href="../antrian/list.php"> Antrian</a></li>
-                <li><a href="tambah_admin.php"> Tambah Akun</a></li>
+                <li><a href="../tambah_admin.php"> Tambah Akun</a></li>
                 <li><a href="../laporan/index.php"> Laporan</a></li>
-                <li><a href="logout.php" class="logout"> Logout</a></li>
+                <li><a href="../logout.php" class="logout"> Logout</a></li>
             </ul>
         </aside>
 
