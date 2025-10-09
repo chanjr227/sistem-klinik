@@ -16,46 +16,6 @@ if (!isset($_SESSION['user_id'])) {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <style>
-        /* Tambahkan style submenu */
-        .submenu {
-            display: none;
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            background: #2d3748;
-            /* lebih gelap dari sidebar */
-        }
-
-        .submenu li a {
-            display: block;
-            padding: 10px 40px;
-            /* indent supaya terlihat child menu */
-            font-size: 14px;
-            color: #cbd5e1;
-            text-decoration: none;
-        }
-
-        .submenu li a:hover {
-            background: #4a5568;
-            color: #fff;
-        }
-
-        /* kalau parent open, tampilkan submenu */
-        .has-submenu.open .submenu {
-            display: block;
-        }
-
-        /* kasih pointer cursor */
-        .has-submenu>a {
-            cursor: pointer;
-        }
-
-        /* warna logout */
-        .logout {
-            color: #ef4444 !important;
-        }
-    </style>
 </head>
 
 <body>

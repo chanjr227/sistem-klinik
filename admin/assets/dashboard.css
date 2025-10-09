@@ -317,39 +317,147 @@ body.dark .form-admin select {
   background: #1a6ad9;
 }
 
-/* Default submenu hidden */
-.sidebar-menu .submenu {
-  display: none;
-  list-style: none;
-  padding-left: 15px;
-  margin: 5px 0;
+/* === SIDEBAR BARU ELEGAN === */
+.sidebar {
+  width: 250px;
+  background: linear-gradient(180deg, #243447, #1b2838);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.15);
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* Style submenu item */
-.sidebar-menu .submenu li a {
-  font-size: 14px;
-  color: #ddd;
+.sidebar.collapsed {
+  width: 80px;
+}
+
+/* HEADER SIDEBAR */
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 1.3rem;
+  background: rgba(0, 0, 0, 0.15);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  font-weight: bold;
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+.sidebar-header:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* MENU UTAMA */
+.sidebar-menu {
+  list-style: none;
+  padding: 1rem 0;
+  flex-grow: 1;
+}
+
+.sidebar-menu li {
+  position: relative;
+}
+
+.sidebar-menu li a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0.9rem 1.4rem;
+  color: #cfd8dc;
+  text-decoration: none;
+  border-left: 3px solid transparent;
+  transition: all 0.25s ease;
+  font-size: 0.95rem;
+}
+
+.sidebar-menu li a i {
+  font-size: 1.2rem;
+  width: 24px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.sidebar-menu li a:hover i {
+  transform: scale(1.1);
+}
+
+/* Hover & Active */
+.sidebar-menu li a:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  border-left: 3px solid #2d89ef;
+}
+
+.sidebar-menu li a.active {
+  background: rgba(45, 137, 239, 0.2);
+  border-left: 3px solid #2d89ef;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* LOGOUT */
+.sidebar-menu li a.logout {
+  color: #ff6b6b;
+}
+
+.sidebar-menu li a.logout:hover {
+  background: rgba(255, 107, 107, 0.15);
+}
+
+/* SUBMENU */
+.sidebar-menu .submenu {
+  list-style: none;
+  margin: 0;
+  padding-left: 35px;
+  background: rgba(255, 255, 255, 0.05);
+  border-left: 2px dashed rgba(255, 255, 255, 0.1);
+  display: none;
+}
+
+.sidebar-menu li.open .submenu {
   display: block;
-  padding: 6px 10px;
-  border-radius: 4px;
-  transition: background 0.3s;
+  animation: fadeIn 0.3s ease;
+}
+
+.sidebar-menu .submenu li a {
+  padding: 0.7rem 1rem;
+  font-size: 0.9rem;
+  color: #b0bec5;
 }
 
 .sidebar-menu .submenu li a:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
 }
 
-/* Saat parent .open -> tampil */
-.sidebar-menu li.open > .submenu {
-  display: block;
+/* FOOTER SIDEBAR */
+.sidebar-footer {
+  padding: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+  font-size: 0.8rem;
+  color: #aaa;
 }
 
-/* Pastikan submenu hidden dulu */
-.has-submenu .submenu {
-  display: none;
+/* ANIMASI */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* Kalau parent open -> tampil */
-.has-submenu.open .submenu {
-  display: block;
+/* === DARK MODE === */
+body.dark .sidebar {
+  background: linear-gradient(180deg, #151521, #1b1b2f);
+  border-right-color: rgba(255, 255, 255, 0.05);
 }
