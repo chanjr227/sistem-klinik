@@ -78,7 +78,7 @@ if (!isset($_SESSION['user_id'])) {
             </section>
 
             <section class="chart-section">
-                <h2>📊 Statistik Kunjungan</h2>
+                <h2>Statistik Kunjungan</h2>
                 <canvas id="kunjunganChart"></canvas>
             </section>
         </main>
