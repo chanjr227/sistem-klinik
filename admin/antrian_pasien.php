@@ -19,6 +19,8 @@ $result = $koneksi->query("SELECT p.id_pasien, p.nama, p.tanggal_lahir, p.jenis_
     <title>Data Pasien - Klinik Sehat</title>
     <link rel="stylesheet" href="../admin/assets/data_pasien.css">
     <link rel="stylesheet" href="../admin/assets/dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
@@ -68,24 +70,29 @@ $result = $koneksi->query("SELECT p.id_pasien, p.nama, p.tanggal_lahir, p.jenis_
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-header">
-                <h2>Klinik Sehat</h2>
+                <i class="fa-solid fa-hospital-user"></i>
+                <span>Klinik Sehat</span>
             </div>
-            <ul class="sidebar-menu">
-                <li><a href="dashboard.php" class="active"> Dashboard</a></li>
-                <li><a href="data_pasien.php"> Data Pasien</a></li>
 
-                <!-- Menu Dokter dengan Submenu -->
+            <ul class="sidebar-menu">
+                <li><a href="dashboard.php" class="active"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
+                <li><a href="data_pasien.php"><i class="fa-solid fa-users"></i> Data Pasien</a></li>
+
                 <li class="has-submenu">
-                    <a href="#"> Data Dokter ▸</a>
+                    <a href="#" class="submenu-toggle">
+                        <i class="fa-solid fa-user-doctor"></i>
+                        Data Dokter
+                        <i class="fa-solid fa-angle-right arrow"></i>
+                    </a>
                     <ul class="submenu">
                         <li><a href="../admin/dokter/data_dokter.php">Lihat Data Dokter</a></li>
                     </ul>
                 </li>
 
-                <li><a href="../antrian/list.php"> Antrian</a></li>
-                <li><a href="tambah_admin.php"> Tambah Akun</a></li>
-                <li><a href="../laporan/index.php"> Laporan</a></li>
-                <li><a href="logout.php" class="logout"> Logout</a></li>
+                <li><a href="../antrian/list.php"><i class="fa-solid fa-list"></i> Antrian</a></li>
+                <li><a href="tambah_admin.php"><i class="fa-solid fa-user-plus"></i> Tambah Akun</a></li>
+                <li><a href="../laporan/index.php"><i class="fa-solid fa-file-lines"></i> Laporan</a></li>
+                <li><a href="logout.php" class="logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
             </ul>
         </aside>
 
@@ -138,18 +145,18 @@ $result = $koneksi->query("SELECT p.id_pasien, p.nama, p.tanggal_lahir, p.jenis_
     </div>
 
     <script>
-        // Toggle submenu
-        document.querySelectorAll(".has-submenu > a").forEach(menu => {
+        // === SUBMENU TOGGLE ===
+        document.querySelectorAll(".submenu-toggle").forEach(menu => {
             menu.addEventListener("click", function(e) {
                 e.preventDefault();
                 const parent = this.parentElement;
                 parent.classList.toggle("open");
 
-                // Ubah panah
+                const arrow = this.querySelector(".arrow");
                 if (parent.classList.contains("open")) {
-                    this.innerHTML = "Data Dokter ▾";
+                    arrow.style.transform = "rotate(90deg)";
                 } else {
-                    this.innerHTML = "Data Dokter ▸";
+                    arrow.style.transform = "rotate(0deg)";
                 }
             });
         });
