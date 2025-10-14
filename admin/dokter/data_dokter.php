@@ -68,8 +68,8 @@ include '../../config/db.php';
             </div>
 
             <ul class="sidebar-menu">
-                <li><a href="dashboard.php" class="active"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
-                <li><a href="data_pasien.php"><i class="fa-solid fa-users"></i> Data Pasien</a></li>
+                <li><a href="../dashboard.php" class="active"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
+                <li><a href="../data_pasien.php"><i class="fa-solid fa-users"></i> Data Pasien</a></li>
 
                 <li class="has-submenu">
                     <a href="#" class="submenu-toggle">
@@ -83,9 +83,9 @@ include '../../config/db.php';
                 </li>
 
                 <li><a href="../antrian/list.php"><i class="fa-solid fa-list"></i> Antrian</a></li>
-                <li><a href="tambah_admin.php"><i class="fa-solid fa-user-plus"></i> Tambah Akun</a></li>
+                <li><a href="../tambah_admin.php"><i class="fa-solid fa-user-plus"></i> Tambah Akun</a></li>
                 <li><a href="../laporan/index.php"><i class="fa-solid fa-file-lines"></i> Laporan</a></li>
-                <li><a href="logout.php" class="logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+                <li><a href="../logout.php" class="logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
             </ul>
         </aside>
 
