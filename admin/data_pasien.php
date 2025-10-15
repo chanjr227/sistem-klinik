@@ -110,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!-- MAIN CONTENT -->
     <main class="content">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>📋 Data Rekam Medis Pasien</h2>
+            <h2>Data Rekam Medis Pasien</h2>
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahModal">
                 + Tambah Rekam Medis
             </button>
