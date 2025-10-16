@@ -42,6 +42,7 @@ if (!isset($_SESSION['user_id'])) {
                     </a>
                     <ul class="submenu">
                         <li><a href="../admin/dokter/data_dokter.php">Lihat Data Dokter</a></li>
+                        <li><a href="../admin/dokter/riwayat_konsultasi.php">Riwayat konsultasi</a></li>
                     </ul>
                 </li>
 
