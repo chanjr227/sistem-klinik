@@ -86,6 +86,7 @@ $result = $koneksi->query("SELECT p.id_pasien, p.nama, p.tanggal_lahir, p.jenis_
                     </a>
                     <ul class="submenu">
                         <li><a href="../admin/dokter/data_dokter.php">Lihat Data Dokter</a></li>
+                        <li><a href="../admin/dokter/riwayat_konsultasi.php">Riwayat konsultasi</a></li>
                     </ul>
                 </li>
 

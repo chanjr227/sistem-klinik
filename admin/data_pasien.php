@@ -97,6 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <ul class="submenu">
                     <li><a href="dokter/data_dokter.php">Lihat Data Dokter</a></li>
                     <li><a href="dokter/tambah_dokter.php">Tambah Dokter</a></li>
+                    <li><a href="dokter/riwayat_konsultasi.php">Riwayat konsultasi</a></li>
                 </ul>
             </li>
 
