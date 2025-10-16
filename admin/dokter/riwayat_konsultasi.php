@@ -34,6 +34,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="../assets/dashboard.css">
+
+    <style>
+        .submenu {
+            max-height: 0;
+            overflow: hidden;
+            background: #2d3748;
+            transition: max-height 0.3s ease;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .submenu li a {
+            display: block;
+            padding: 10px 40px;
+            font-size: 14px;
+            color: #cbd5e1;
+            text-decoration: none;
+        }
+
+        .submenu li a:hover {
+            background: #4a5568;
+            color: #fff;
+        }
+
+        .has-submenu.open .submenu {
+            max-height: 500px;
+        }
+
+        .arrow {
+            transition: transform 0.3s ease;
+            float: right;
+            margin-top: 4px;
+        }
+    </style>
 </head>
 
 <body>
@@ -94,7 +129,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </thead>
                     <tbody>
                         <?php
-                        // ✅ Query SQL sudah diperbaiki sesuai struktur tabel
                         $sql = "
                             SELECT 
                                 r.*, 
@@ -131,3 +165,95 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </div>
     </main>
+
+    <!-- MODAL TAMBAH DATA -->
+    <div class="modal fade" id="tambahModal" tabindex="-1" aria-labelledby="tambahModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <form method="POST">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Tambah Riwayat Konsultasi</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Pasien</label>
+                                <select name="id_pasien" class="form-select" required>
+                                    <option value="">-- Pilih Pasien --</option>
+                                    <?php
+                                    $pasien = $koneksi->query("SELECT id_pasien, nama FROM pasien");
+                                    while ($p = $pasien->fetch_assoc()) {
+                                        echo "<option value='{$p['id_pasien']}'>{$p['nama']}</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Dokter</label>
+                                <select name="id_dokter" class="form-select" required>
+                                    <option value="">-- Pilih Dokter --</option>
+                                    <?php
+                                    $dokter = $koneksi->query("SELECT id_dokter, nama, spesialisasi FROM dokter");
+                                    while ($d = $dokter->fetch_assoc()) {
+                                        echo "<option value='{$d['id_dokter']}'>{$d['nama']} ({$d['spesialisasi']})</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Tanggal Konsultasi</label>
+                            <input type="date" name="tanggal" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Diagnosa</label>
+                            <textarea name="diagnosa" class="form-control" rows="3" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Resep Obat</label>
+                            <textarea name="resep_obat" class="form-control" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Submenu toggle logic
+        document.querySelectorAll('.submenu-toggle').forEach(toggle => {
+            toggle.addEventListener('click', e => {
+                e.preventDefault();
+                const parent = toggle.parentElement;
+                const arrow = toggle.querySelector('.arrow');
+                const submenu = parent.querySelector('.submenu');
+
+                document.querySelectorAll('.has-submenu.open').forEach(openItem => {
+                    if (openItem !== parent) {
+                        openItem.classList.remove('open');
+                        openItem.querySelector('.arrow').style.transform = 'rotate(0deg)';
+                        openItem.querySelector('.submenu').style.maxHeight = null;
+                    }
+                });
+
+                parent.classList.toggle('open');
+                if (parent.classList.contains('open')) {
+                    arrow.style.transform = 'rotate(90deg)';
+                    submenu.style.maxHeight = submenu.scrollHeight + 'px';
+                } else {
+                    arrow.style.transform = 'rotate(0deg)';
+                    submenu.style.maxHeight = null;
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
