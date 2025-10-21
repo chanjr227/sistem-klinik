@@ -82,7 +82,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <ul class="sidebar-menu">
             <li><a href="../dashboard.php"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
             <li><a href="../data_pasien.php"><i class="fa-solid fa-users"></i> Data Pasien</a></li>
-            <li><a href="../antrian_pasien.php"><i class="fa-solid fa-list"></i> Antrian</a></li>
 
             <li class="has-submenu">
                 <a href="javascript:void(0)" class="submenu-toggle">
@@ -91,10 +90,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </a>
                 <ul class="submenu">
                     <li><a href="../dokter/data_dokter.php">Lihat Data Dokter</a></li>
+                    <li><a href="../dokter/riwayat_konsultasi.php" class="active"><i class="fa-solid fa-stethoscope"></i> Riwayat Konsultasi</a></li>
                 </ul>
             </li>
-
-            <li><a href="riwayat_konsultasi.php" class="active"><i class="fa-solid fa-stethoscope"></i> Riwayat Konsultasi</a></li>
+            <li><a href="../antrian_pasien.php"><i class="fa-solid fa-list"></i> Antrian</a></li>
             <li><a href="../tambah_admin.php"><i class="fa-solid fa-user-plus"></i> Tambah Akun</a></li>
             <li><a href="../../laporan/index.php"><i class="fa-solid fa-file-lines"></i> Laporan</a></li>
             <li><a href="../logout.php" class="logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
