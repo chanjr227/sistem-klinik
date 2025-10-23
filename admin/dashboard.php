@@ -65,24 +65,31 @@ if (!isset($_SESSION['user_id'])) {
             </header>
 
             <section class="cards">
-                <div class="card blue">
-                    <h3>Total Pasien</h3>
-                    <p class="number">120</p>
+                <div class="card blue d-flex align-items-center">
+                    <i class="fa-solid fa-users fa-2x me-3"></i>
+                    <div>
+                        <h3>Total Pasien</h3>
+                        <p class="number">120</p>
+                    </div>
                 </div>
-                <div class="card green">
-                    <h3>Dokter Aktif</h3>
-                    <p class="number">8</p>
+
+                <div class="card green d-flex align-items-center">
+                    <i class="fa-solid fa-user-doctor fa-2x me-3"></i>
+                    <div>
+                        <h3>Dokter Aktif</h3>
+                        <p class="number">8</p>
+                    </div>
                 </div>
-                <div class="card orange">
-                    <h3>Antrian Hari Ini</h3>
-                    <p class="number">35</p>
+
+                <div class="card orange d-flex align-items-center">
+                    <i class="fa-solid fa-list-check fa-2x me-3"></i>
+                    <div>
+                        <h3>Antrian Hari Ini</h3>
+                        <p class="number">35</p>
+                    </div>
                 </div>
             </section>
 
-            <section class="chart-section">
-                <h2>Statistik Kunjungan</h2>
-                <canvas id="kunjunganChart"></canvas>
-            </section>
         </main>
     </div>
 
