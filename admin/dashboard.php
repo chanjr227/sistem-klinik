@@ -4,7 +4,27 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: ../auth/login.php");
     exit;
 }
+include '../config/db.php';
+
+// === Ambil data kunjungan pasien per hari ===
+$labels = [];
+$values = [];
+
+$sql = "SELECT DATE(tanggal_daftar) AS tgl, COUNT(*) AS total 
+        FROM pasien
+        GROUP BY DATE(tanggal_daftar)
+        ORDER BY tgl ASC";
+
+$result = $koneksi->query($sql);
+
+if ($result && $result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $labels[] = date('d M', strtotime($row['tgl']));
+        $values[] = (int)$row['total'];
+    }
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 
@@ -90,6 +110,12 @@ if (!isset($_SESSION['user_id'])) {
                 </div>
             </section>
 
+            <section class="chart-section">
+                <h2>📊 Statistik Kunjungan Pasien</h2>
+                <canvas id="kunjunganChart"></canvas>
+            </section>
+
+
         </main>
     </div>
 
@@ -130,20 +156,18 @@ if (!isset($_SESSION['user_id'])) {
             });
         });
 
-        // === CHART.JS ===
         const ctx = document.getElementById('kunjunganChart');
+
         new Chart(ctx, {
-            type: 'line',
+            type: 'bar',
             data: {
-                labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
+                labels: <?= json_encode($labels) ?>,
                 datasets: [{
                     label: 'Jumlah Kunjungan',
-                    data: [15, 25, 20, 30, 40, 35, 28],
+                    data: <?= json_encode($values) ?>,
+                    backgroundColor: 'rgba(59, 130, 246, 0.6)',
                     borderColor: '#3b82f6',
-                    backgroundColor: 'rgba(59, 130, 246, 0.2)',
-                    borderWidth: 2,
-                    fill: true,
-                    tension: 0.3
+                    borderWidth: 1
                 }]
             },
             options: {
