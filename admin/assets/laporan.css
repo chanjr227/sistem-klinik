@@ -1,0 +1,111 @@
+/* === GLOBAL === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+
+body {
+  display: flex;
+  min-height: 100vh;
+  background: #f4f6f8;
+}
+
+/* === WRAPPER === */
+.wrapper {
+  display: flex;
+  width: 100%;
+}
+
+/* === SIDEBAR === */
+.sidebar {
+  width: 250px;
+  background: #1e2a38;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.15);
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 1.3rem;
+  background: #18222f;
+  font-weight: 600;
+}
+
+.sidebar-header i {
+  font-size: 22px;
+  color: #4da3ff;
+}
+
+.sidebar-menu {
+  list-style: none;
+  padding: 1rem 0;
+  flex-grow: 1;
+}
+
+.sidebar-menu li a {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0.9rem 1.4rem;
+  color: #bfc8d8;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.sidebar-menu li a:hover,
+.sidebar-menu li a.active {
+  background: #2b3f55;
+  color: #fff;
+  border-left: 3px solid #4da3ff;
+}
+
+.submenu {
+  list-style: none;
+  padding-left: 50px;
+  background: rgba(255, 255, 255, 0.05);
+  display: none;
+}
+
+.has-submenu.open .submenu {
+  display: block;
+}
+
+/* === CONTENT === */
+.content {
+  flex: 1;
+  padding: 2rem;
+  background: #f5f6fa;
+  min-height: 100vh;
+}
+
+.content-header h1 {
+  font-size: 1.8rem;
+  color: #1e2a38;
+  margin-bottom: 0.3rem;
+}
+
+.content-header p {
+  color: #666;
+  margin-bottom: 1.2rem;
+}
+
+.print-btn {
+  background: #4da3ff;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.3s ease;
+}
+
+.print-btn:hover {
+  ba

@@ -69,7 +69,7 @@ if ($result && $result->num_rows > 0) {
 
                 <li><a href="antrian_pasien.php"><i class="fa-solid fa-list"></i> Antrian</a></li>
                 <li><a href="tambah_admin.php"><i class="fa-solid fa-user-plus"></i> Tambah Akun</a></li>
-                <li><a href="../laporan/index.php"><i class="fa-solid fa-file-lines"></i> Laporan</a></li>
+                <li><a href="laporan.php"><i class="fa-solid fa-file-lines"></i> Laporan</a></li>
                 <li><a href="logout.php" class="logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
             </ul>
         </aside>
