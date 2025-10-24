@@ -156,18 +156,20 @@ if ($result && $result->num_rows > 0) {
             });
         });
 
-        const ctx = document.getElementById('kunjunganChart');
+        //chart.js
+        const ctx = document.getElementById('kunjunganChart').getContext('2d');
 
         new Chart(ctx, {
-            type: 'bar',
+            type: 'line',
             data: {
                 labels: <?= json_encode($labels) ?>,
                 datasets: [{
                     label: 'Jumlah Kunjungan',
                     data: <?= json_encode($values) ?>,
-                    backgroundColor: 'rgba(59, 130, 246, 0.6)',
                     borderColor: '#3b82f6',
-                    borderWidth: 1
+                    backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                    tension: 0.3,
+                    fill: true
                 }]
             },
             options: {
