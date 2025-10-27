@@ -6,7 +6,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 include '../config/db.php';
 
-// Ambil data nama pasien
+// Ambil data pasien
 $sql = "SELECT nama FROM pasien ORDER BY id_pasien ASC";
 $result = $koneksi->query($sql);
 ?>
@@ -18,14 +18,17 @@ $result = $koneksi->query($sql);
     <meta charset="UTF-8">
     <title>Laporan Pasien - Klinik Sehat</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <!-- Font & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
     <!-- CSS -->
     <link rel="stylesheet" href="assets/laporan.css">
 </head>
 
 <body>
+
     <div class="wrapper">
         <!-- Sidebar -->
         <aside class="sidebar">
@@ -45,7 +48,7 @@ $result = $koneksi->query($sql);
                     </a>
                     <ul class="submenu">
                         <li><a href="../admin/dokter/data_dokter.php">Lihat Data Dokter</a></li>
-                        <li><a href="../admin/dokter/riwayat_konsultasi.php">Riwayat konsultasi</a></li>
+                        <li><a href="../admin/dokter/riwayat_konsultasi.php">Riwayat Konsultasi</a></li>
                         <li><a href="../admin/dokter/tambah_dokter.php">Tambah Dokter</a></li>
                     </ul>
                 </li>
@@ -59,7 +62,7 @@ $result = $koneksi->query($sql);
         <!-- Main Content -->
         <main class="content">
             <header class="content-header">
-                <h1>Laporan Nama Pasien</h1>
+                <h1><i class="fa-solid fa-file-medical"></i> Laporan Pasien Klinik Sehat</h1>
                 <p>Berikut daftar nama pasien yang terdaftar di sistem.</p>
                 <button onclick="window.print()" class="print-btn">
                     <i class="fa-solid fa-print"></i> Cetak Laporan
@@ -67,6 +70,9 @@ $result = $koneksi->query($sql);
             </header>
 
             <section class="table-section">
+                <h2>📋 Daftar Nama Pasien</h2>
+                <p class="tanggal-cetak">Tanggal cetak: <?= date('d F Y') ?></p>
+
                 <table>
                     <thead>
                         <tr>
@@ -80,9 +86,9 @@ $result = $koneksi->query($sql);
                         if ($result && $result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
                                 echo "<tr>
-                                        <td>{$no}</td>
-                                        <td>{$row['nama']}</td>
-                                      </tr>";
+                                    <td>{$no}</td>
+                                    <td>{$row['nama']}</td>
+                                  </tr>";
                                 $no++;
                             }
                         } else {
@@ -96,7 +102,6 @@ $result = $koneksi->query($sql);
     </div>
 
     <script>
-        // === SUBMENU TOGGLE ===
         document.querySelectorAll(".submenu-toggle").forEach(menu => {
             menu.addEventListener("click", function(e) {
                 e.preventDefault();
@@ -108,6 +113,7 @@ $result = $koneksi->query($sql);
             });
         });
     </script>
+
 </body>
 
 </html>
