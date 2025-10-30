@@ -7,17 +7,76 @@ if (!isset($_SESSION['user_id'])) {
 
 include '../../config/db.php';
 
-// Ambil data user yang sedang login
 $user_id = $_SESSION['user_id'];
 $query = $koneksi->query("SELECT * FROM admin WHERE id_admin = '$user_id'");
 $user = $query->fetch_assoc();
 
-// Jika tidak ditemukan user, atau bukan superadmin → tolak akses
+// Cek hak akses
 if (!$user || $user['role'] !== 'superadmin') {
-    echo "<script>
-        alert('Akses ditolak! Halaman ini hanya bisa diakses oleh Superadmin.');
-        window.location.href = '../dashboard.php';
-    </script>";
+    // Jika bukan superadmin, tampilkan halaman pemberitahuan
+    echo '
+    <!DOCTYPE html>
+    <html lang="id">
+    <head>
+        <meta charset="UTF-8">
+        <title>Akses Ditolak</title>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700&display=swap" rel="stylesheet">
+        <style>
+            body {
+                font-family: "Inter", sans-serif;
+                background-color: #f8fafc;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+            }
+            .notif-box {
+                background: white;
+                padding: 40px;
+                border-radius: 16px;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+                text-align: center;
+                max-width: 400px;
+            }
+            .notif-box h1 {
+                font-size: 24px;
+                color: #dc2626;
+                margin-bottom: 10px;
+            }
+            .notif-box p {
+                color: #475569;
+                margin-bottom: 20px;
+            }
+            .notif-box i {
+                font-size: 50px;
+                color: #ef4444;
+                margin-bottom: 15px;
+            }
+            .notif-box a {
+                background-color: #2563eb;
+                color: white;
+                padding: 10px 20px;
+                border-radius: 8px;
+                text-decoration: none;
+                transition: 0.3s;
+            }
+            .notif-box a:hover {
+                background-color: #1d4ed8;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="notif-box">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <h1>Akses Ditolak</h1>
+            <p>Maaf, halaman ini hanya bisa diakses oleh <b>Superadmin</b>.</p>
+            <a href="../dashboard.php">Kembali ke Dashboard</a>
+        </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/all.min.js"></script>
+    </body>
+    </html>
+    ';
     exit;
 }
 ?>
@@ -29,7 +88,6 @@ if (!$user || $user['role'] !== 'superadmin') {
     <title>Data Dokter - Klinik Sehat</title>
     <link rel="stylesheet" href="../assets/dashboard.css">
     <link rel="stylesheet" href="../assets/dokter.css">
-    <!-- Font & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <style>
@@ -199,7 +257,6 @@ if (!$user || $user['role'] !== 'superadmin') {
             });
         });
     </script>
-
 </body>
 
 </html>
