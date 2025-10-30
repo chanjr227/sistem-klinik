@@ -7,26 +7,31 @@ if (!isset($_SESSION['user_id'])) {
 
 include '../../config/db.php';
 
+// Ambil data user login
 $user_id = $_SESSION['user_id'];
 $query = $koneksi->query("SELECT * FROM admin WHERE id_admin = '$user_id'");
 $user = $query->fetch_assoc();
 
-// jika bukan superadmin
+// Cek hak akses (hanya superadmin)
 $akses_ditolak = false;
 if (!$user || $user['role'] !== 'superadmin') {
     $akses_ditolak = true;
 }
+
+// Ambil data dokter dari tabel dokter
+$dokter_data = $koneksi->query("SELECT * FROM dokter ORDER BY id_dokter ASC");
 ?>
+
 <!DOCTYPE html>
-<html lang='id'>
+<html lang="id">
 
 <head>
-    <meta charset='UTF-8'>
+    <meta charset="UTF-8">
     <title>Data Dokter - Klinik Sehat</title>
-    <link rel='stylesheet' href='../assets/dashboard.css'>
-    <link rel='stylesheet' href='../assets/dokter.css'>
-    <link href='https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap' rel='stylesheet'>
-    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css'>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/dashboard.css">
+    <link rel="stylesheet" href="../assets/dokter.css">
     <style>
         /* === Modal Notifikasi Akses Ditolak === */
         .akses-modal {
@@ -95,30 +100,46 @@ if (!$user || $user['role'] !== 'superadmin') {
 </head>
 
 <body>
-    <div class='wrapper'>
-        <aside class='sidebar'>
-            <div class='sidebar-header'>
-                <i class='fa-solid fa-hospital-user'></i>
+    <div class="wrapper">
+        <!-- === SIDEBAR (Sama seperti dashboard) === -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <i class="fa-solid fa-hospital-user"></i>
                 <span>Klinik Sehat</span>
             </div>
 
-            <ul class='sidebar-menu'>
-                <li><a href='../dashboard.php'><i class='fa-solid fa-gauge'></i> Dashboard</a></li>
-                <li><a href='../data_pasien.php'><i class='fa-solid fa-users'></i> Data Pasien</a></li>
-                <li><a href='data_dokter.php' class='active'><i class='fa-solid fa-user-doctor'></i> Data Dokter</a></li>
-                <li><a href='../antrian_pasien.php'><i class='fa-solid fa-list'></i> Antrian</a></li>
-                <li><a href='../laporan.php'><i class='fa-solid fa-file-lines'></i> Laporan</a></li>
-                <li><a href='../logout.php' class='logout'><i class='fa-solid fa-right-from-bracket'></i> Logout</a></li>
+            <ul class="sidebar-menu">
+                <li><a href="../dashboard.php"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
+                <li><a href="../data_pasien.php"><i class="fa-solid fa-users"></i> Data Pasien</a></li>
+
+                <li class="has-submenu open">
+                    <a href="#" class="submenu-toggle active">
+                        <i class="fa-solid fa-user-doctor"></i>
+                        Data Dokter
+                        <i class="fa-solid fa-angle-right arrow" style="transform: rotate(90deg);"></i>
+                    </a>
+                    <ul class="submenu" style="display: block;">
+                        <li><a href="data_dokter.php" class="active">Lihat Data Dokter</a></li>
+                        <li><a href="riwayat_konsultasi.php">Riwayat Konsultasi</a></li>
+                        <li><a href="tambah_dokter.php">Tambah Dokter</a></li>
+                    </ul>
+                </li>
+
+                <li><a href="../antrian_pasien.php"><i class="fa-solid fa-list"></i> Antrian</a></li>
+                <li><a href="../tambah_admin.php"><i class="fa-solid fa-user-plus"></i> Tambah Akun</a></li>
+                <li><a href="../laporan.php"><i class="fa-solid fa-file-lines"></i> Laporan</a></li>
+                <li><a href="../logout.php" class="logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
             </ul>
         </aside>
 
-        <main class='content'>
-            <header class='content-header'>
+        <!-- === MAIN CONTENT === -->
+        <main class="content">
+            <header class="content-header">
                 <h1>Data Dokter</h1>
             </header>
 
-            <section class='table-section'>
-                <table class='data-table'>
+            <section class="table-section">
+                <table class="data-table">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -129,19 +150,34 @@ if (!$user || $user['role'] !== 'superadmin') {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td colspan='5' style='text-align:center;'>Data dokter akan tampil di sini...</td>
-                        </tr>
+                        <?php if ($dokter_data->num_rows > 0): ?>
+                            <?php while ($row = $dokter_data->fetch_assoc()): ?>
+                                <tr>
+                                    <td><?= htmlspecialchars($row['id_dokter']) ?></td>
+                                    <td><?= htmlspecialchars($row['nama']) ?></td>
+                                    <td><?= htmlspecialchars($row['spesialisasi'] ?? '-') ?></td>
+                                    <td><?= htmlspecialchars($row['jadwal_praktik'] ?? '-') ?></td>
+                                    <td>
+                                        <button class="btn-edit"><i class="fa-solid fa-pen"></i></button>
+                                        <button class="btn-delete"><i class="fa-solid fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            <?php endwhile; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="5" style="text-align:center;">Belum ada data dokter.</td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </section>
         </main>
     </div>
 
-    <!-- Modal Notifikasi Akses Ditolak -->
-    <div class='akses-modal' id='aksesModal'>
-        <div class='akses-modal-content'>
-            <i class='fa-solid fa-triangle-exclamation'></i>
+    <!-- === Modal Akses Ditolak === -->
+    <div class="akses-modal" id="aksesModal">
+        <div class="akses-modal-content">
+            <i class="fa-solid fa-triangle-exclamation"></i>
             <h2>Akses Ditolak</h2>
             <p>Halaman ini hanya dapat diakses oleh <b>Superadmin</b>.</p>
             <button onclick="window.location.href='../dashboard.php'">Kembali ke Dashboard</button>
@@ -149,11 +185,32 @@ if (!$user || $user['role'] !== 'superadmin') {
     </div>
 
     <script>
+        // === Modal akses ditolak ===
         <?php if ($akses_ditolak): ?>
-            document.addEventListener("DOMContentLoaded", function() {
+            document.addEventListener("DOMContentLoaded", () => {
                 document.getElementById("aksesModal").style.display = "flex";
             });
         <?php endif; ?>
+
+        // === Submenu toggle ===
+        document.querySelectorAll(".submenu-toggle").forEach(menu => {
+            menu.addEventListener("click", function(e) {
+                e.preventDefault();
+                const parent = this.parentElement;
+                parent.classList.toggle("open");
+
+                const submenu = parent.querySelector(".submenu");
+                const arrow = this.querySelector(".arrow");
+
+                if (parent.classList.contains("open")) {
+                    submenu.style.display = "block";
+                    arrow.style.transform = "rotate(90deg)";
+                } else {
+                    submenu.style.display = "none";
+                    arrow.style.transform = "rotate(0deg)";
+                }
+            });
+        });
     </script>
 </body>
 
