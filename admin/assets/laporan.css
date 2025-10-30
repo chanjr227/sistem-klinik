@@ -14,9 +14,11 @@ body {
 /* === Sidebar === */
 .sidebar {
   width: 240px;
-  background: #004aad;
-  color: white;
+  background: #1e2a3a; /* warna utama sidebar */
+  color: #ffffff;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 .sidebar-header {
@@ -26,33 +28,46 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
+  color: #e6ecf5;
 }
 
 .sidebar-menu {
   list-style: none;
   padding: 0;
+  margin: 0;
+  flex: 1;
 }
 
 .sidebar-menu li {
-  margin-bottom: 12px;
+  margin-bottom: 5px;
 }
 
 .sidebar-menu a {
-  color: white;
+  color: #cfd8e3;
   text-decoration: none;
-  display: block;
-  padding: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
   border-radius: 6px;
+  transition: 0.3s;
+  font-size: 15px;
 }
 
 .sidebar-menu a:hover,
 .sidebar-menu a.active {
-  background: #0066ff;
+  background: #2f3e55; /* warna saat hover / aktif */
+  color: #ffffff;
+}
+
+.sidebar-menu i {
+  width: 20px;
+  text-align: center;
 }
 
 .submenu {
   display: none;
-  padding-left: 15px;
+  padding-left: 20px;
 }
 
 .has-submenu.open .submenu {
@@ -60,7 +75,8 @@ body {
 }
 
 .logout {
-  color: #ffdddd;
+  color: #ff4d4d !important;
+  font-weight: 600;
 }
 
 /* === Content === */
