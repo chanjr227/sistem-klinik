@@ -67,7 +67,7 @@ if ($result && $result->num_rows > 0) {
                     </ul>
                 </li>
 
-                <li><a href="../farmasi/obat.php"><i class="fa-solid fa-list"></i> MENU OBAT</a></li>
+                <li><a href="../farmasi/obat.php" class="active"><i class="fa-solid fa-capsules"></i> Menu Obat</a></li>
 
                 <li><a href="antrian_pasien.php"><i class="fa-solid fa-list"></i> Antrian</a></li>
                 <li><a href="tambah_admin.php"><i class="fa-solid fa-user-plus"></i> Tambah Akun</a></li>
