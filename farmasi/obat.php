@@ -7,36 +7,70 @@ if (!isset($_SESSION['user_id'])) {
 
 include '../config/db.php';
 
-$query = mysqli_query($koneksi, "SELECT * FROM obat ORDER BY id_obat DESC");
-?>
+// ====================== HANDLE TAMBAH ======================
+if (isset($_POST['tambah_obat'])) {
+    $nama = $_POST['nama_obat'];
+    $stok = $_POST['stok'];
+    $harga = $_POST['harga'];
 
+    $query = mysqli_query($koneksi, "INSERT INTO obat (nama_obat, stok, harga) VALUES ('$nama', '$stok', '$harga')");
+    if ($query) {
+        $notif = "tambah_success";
+    } else {
+        $notif = "tambah_fail";
+    }
+}
+
+// ====================== HANDLE EDIT ======================
+if (isset($_POST['edit_obat'])) {
+    $id = $_POST['id'];
+    $nama = $_POST['nama_obat'];
+    $stok = $_POST['stok'];
+    $harga = $_POST['harga'];
+
+    $query = mysqli_query($koneksi, "UPDATE obat SET nama_obat='$nama', stok='$stok', harga='$harga' WHERE id_obat='$id'");
+    if ($query) {
+        $notif = "edit_success";
+    } else {
+        $notif = "edit_fail";
+    }
+}
+
+// ====================== HANDLE DELETE ======================
+if (isset($_POST['hapus_obat'])) {
+    $id = $_POST['id'];
+
+    $query = mysqli_query($koneksi, "DELETE FROM obat WHERE id_obat='$id'");
+    if ($query) {
+        $notif = "hapus_success";
+    } else {
+        $notif = "hapus_fail";
+    }
+}
+
+// Ambil data obat
+$data = mysqli_query($koneksi, "SELECT * FROM obat ORDER BY id_obat DESC");
+?>
 <!DOCTYPE html>
 <html lang="id">
 
 <head>
     <meta charset="UTF-8">
     <title>Data Obat - Klinik Sehat</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-
-    <!-- Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-
-    <!-- CSS Dashboard -->
-    <link rel="stylesheet" href="../admin/assets/dashboard.css">
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <link rel="stylesheet" href="../admin/assets/dashboard.css">
 </head>
 
 <body>
     <div class="wrapper">
 
-        <!-- Sidebar -->
+        <!-- SIDEBAR -->
         <aside class="sidebar">
             <div class="sidebar-header">
                 <i class="fa-solid fa-hospital-user"></i>
@@ -44,12 +78,13 @@ $query = mysqli_query($koneksi, "SELECT * FROM obat ORDER BY id_obat DESC");
             </div>
 
             <ul class="sidebar-menu">
-                <li><a href="../admin/dashboard.php"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
-                <li><a href="../admin/data_pasien.php"><i class="fa-solid fa-users"></i> Data Pasien</a></li>
+                <li><a href="dashboard.php" class="active"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
+                <li><a href="data_pasien.php"><i class="fa-solid fa-users"></i> Data Pasien</a></li>
 
                 <li class="has-submenu">
                     <a href="#" class="submenu-toggle">
-                        <i class="fa-solid fa-user-doctor"></i> Data Dokter
+                        <i class="fa-solid fa-user-doctor"></i>
+                        Data Dokter
                         <i class="fa-solid fa-angle-right arrow"></i>
                     </a>
                     <ul class="submenu">
@@ -61,14 +96,14 @@ $query = mysqli_query($koneksi, "SELECT * FROM obat ORDER BY id_obat DESC");
 
                 <li><a href="../farmasi/obat.php" class="active"><i class="fa-solid fa-capsules"></i> Menu Obat</a></li>
 
-                <li><a href="../admin/antrian_pasien.php"><i class="fa-solid fa-list"></i> Antrian</a></li>
-                <li><a href="../admin/tambah_admin.php"><i class="fa-solid fa-user-plus"></i> Tambah Akun</a></li>
-                <li><a href="../admin/laporan.php"><i class="fa-solid fa-file-lines"></i> Laporan</a></li>
-                <li><a href="../admin/logout.php" class="logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+                <li><a href="antrian_pasien.php"><i class="fa-solid fa-list"></i> Antrian</a></li>
+                <li><a href="tambah_admin.php"><i class="fa-solid fa-user-plus"></i> Tambah Akun</a></li>
+                <li><a href="laporan.php"><i class="fa-solid fa-file-lines"></i> Laporan</a></li>
+                <li><a href="logout.php" class="logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
             </ul>
         </aside>
 
-        <!-- Main Content -->
+        <!-- MAIN CONTENT -->
         <main class="content">
             <header class="content-header">
                 <h1>Data Obat</h1>
@@ -77,11 +112,25 @@ $query = mysqli_query($koneksi, "SELECT * FROM obat ORDER BY id_obat DESC");
 
             <div class="card p-3">
 
-                <!-- Tombol Tambah -->
+                <!-- NOTIFIKASI -->
+                <?php if (isset($notif)) { ?>
+                    <?php if ($notif == "tambah_success") { ?>
+                        <div class="alert alert-success">Obat berhasil ditambah!</div>
+                    <?php } elseif ($notif == "edit_success") { ?>
+                        <div class="alert alert-warning">Data obat berhasil diperbarui!</div>
+                    <?php } elseif ($notif == "hapus_success") { ?>
+                        <div class="alert alert-danger">Obat berhasil dihapus!</div>
+                    <?php } else { ?>
+                        <div class="alert alert-danger">Terjadi kesalahan, coba lagi!</div>
+                    <?php } ?>
+                <?php } ?>
+
+                <!-- TOMBOL TAMBAH -->
                 <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modalTambah">
                     + Tambah Obat
                 </button>
 
+                <!-- TABLE -->
                 <table class="table table-bordered table-striped">
                     <thead class="table-dark">
                         <tr>
@@ -89,16 +138,17 @@ $query = mysqli_query($koneksi, "SELECT * FROM obat ORDER BY id_obat DESC");
                             <th>Nama Obat</th>
                             <th>Stok</th>
                             <th>Harga</th>
-                            <th width="150">Aksi</th>
+                            <th width="160">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php while ($row = mysqli_fetch_assoc($query)) { ?>
+                        <?php while ($row = mysqli_fetch_assoc($data)) { ?>
                             <tr>
                                 <td><?= $row['id_obat'] ?></td>
                                 <td><?= $row['nama_obat'] ?></td>
                                 <td><?= $row['stok'] ?></td>
-                                <td>Rp <?= number_format($row['harga'], 2, ',', '.') ?></td>
+                                <td>Rp <?= number_format($row['harga'], 0, ',', '.') ?></td>
+
                                 <td>
                                     <button class="btn btn-warning btn-sm"
                                         data-bs-toggle="modal"
@@ -125,19 +175,19 @@ $query = mysqli_query($koneksi, "SELECT * FROM obat ORDER BY id_obat DESC");
 
             </div>
         </main>
-
     </div>
 
-    <!-- ================== MODAL TAMBAH ================== -->
+    <!-- ====================== MODAL TAMBAH ====================== -->
     <div class="modal fade" id="modalTambah">
         <div class="modal-dialog">
             <div class="modal-content">
 
-                <form action="obat_add.php" method="post">
+                <form method="post">
                     <div class="modal-header">
                         <h5 class="modal-title">Tambah Obat</h5>
                         <button class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
+
                     <div class="modal-body">
                         <label>Nama Obat</label>
                         <input type="text" name="nama_obat" class="form-control" required>
@@ -148,9 +198,10 @@ $query = mysqli_query($koneksi, "SELECT * FROM obat ORDER BY id_obat DESC");
                         <label class="mt-2">Harga</label>
                         <input type="number" name="harga" class="form-control" required>
                     </div>
+
                     <div class="modal-footer">
                         <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button class="btn btn-primary">Simpan</button>
+                        <button class="btn btn-primary" name="tambah_obat">Simpan</button>
                     </div>
                 </form>
 
@@ -158,16 +209,17 @@ $query = mysqli_query($koneksi, "SELECT * FROM obat ORDER BY id_obat DESC");
         </div>
     </div>
 
-    <!-- ================== MODAL EDIT ================== -->
+    <!-- ====================== MODAL EDIT ====================== -->
     <div class="modal fade" id="modalEdit">
         <div class="modal-dialog">
             <div class="modal-content">
 
-                <form action="obat_edit.php" method="post">
+                <form method="post">
                     <div class="modal-header">
                         <h5 class="modal-title">Edit Obat</h5>
                         <button class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
+
                     <div class="modal-body">
                         <input type="hidden" id="edit_id" name="id">
 
@@ -180,9 +232,10 @@ $query = mysqli_query($koneksi, "SELECT * FROM obat ORDER BY id_obat DESC");
                         <label class="mt-2">Harga</label>
                         <input type="number" id="edit_harga" name="harga" class="form-control" required>
                     </div>
+
                     <div class="modal-footer">
                         <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button class="btn btn-warning">Update</button>
+                        <button class="btn btn-warning" name="edit_obat">Update</button>
                     </div>
                 </form>
 
@@ -190,23 +243,25 @@ $query = mysqli_query($koneksi, "SELECT * FROM obat ORDER BY id_obat DESC");
         </div>
     </div>
 
-    <!-- ================== MODAL HAPUS ================== -->
+    <!-- ====================== MODAL HAPUS ====================== -->
     <div class="modal fade" id="modalHapus">
         <div class="modal-dialog">
             <div class="modal-content">
 
-                <form action="obat_delete.php" method="post">
+                <form method="post">
                     <div class="modal-header">
                         <h5 class="modal-title">Hapus Obat</h5>
                         <button class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
+
                     <div class="modal-body">
                         <input type="hidden" id="hapus_id" name="id">
-                        <p>Hapus obat: <b id="hapus_nama"></b> ?</p>
+                        <p>Hapus obat <b id="hapus_nama"></b> ?</p>
                     </div>
+
                     <div class="modal-footer">
                         <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button class="btn btn-danger">Hapus</button>
+                        <button class="btn btn-danger" name="hapus_obat">Hapus</button>
                     </div>
                 </form>
 
@@ -214,20 +269,10 @@ $query = mysqli_query($koneksi, "SELECT * FROM obat ORDER BY id_obat DESC");
         </div>
     </div>
 
-    <!-- Script Submenu -->
+    <!-- Script Modal -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script>
-        document.querySelectorAll(".submenu-toggle").forEach(menu => {
-            menu.addEventListener("click", function(e) {
-                e.preventDefault();
-                const parent = this.parentElement;
-                parent.classList.toggle("open");
-
-                const arrow = this.querySelector(".arrow");
-                arrow.style.transform = parent.classList.contains("open") ? "rotate(90deg)" : "rotate(0deg)";
-            });
-        });
-
-        // Pass data ke modal edit
         $('#modalEdit').on('show.bs.modal', function(e) {
             let btn = $(e.relatedTarget);
             $('#edit_id').val(btn.data('id'));
@@ -236,7 +281,6 @@ $query = mysqli_query($koneksi, "SELECT * FROM obat ORDER BY id_obat DESC");
             $('#edit_harga').val(btn.data('harga'));
         });
 
-        // Pass data ke modal hapus
         $('#modalHapus').on('show.bs.modal', function(e) {
             let btn = $(e.relatedTarget);
             $('#hapus_id').val(btn.data('id'));
