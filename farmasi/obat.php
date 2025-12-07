@@ -78,8 +78,8 @@ $data = mysqli_query($koneksi, "SELECT * FROM obat ORDER BY id_obat DESC");
             </div>
 
             <ul class="sidebar-menu">
-                <li><a href="dashboard.php" class="active"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
-                <li><a href="data_pasien.php"><i class="fa-solid fa-users"></i> Data Pasien</a></li>
+                <li><a href="../admin/dashboard.php" class="active"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
+                <li><a href="../admin/data_pasien.php"><i class="fa-solid fa-users"></i> Data Pasien</a></li>
 
                 <li class="has-submenu">
                     <a href="#" class="submenu-toggle">
