@@ -74,6 +74,7 @@ if ($result && $result->num_rows > 0) {
                     </a>
                     <ul class="submenu">
                         <li><a href="../farmasi/obat.php" class="active"><i class="fa-solid fa-capsules"></i> Manajemen Obat</a></li>
+                        <li><a href="../farmasi/resep.php" class="active"><i class="fa-solid fa-capsules"></i> Resep Obat</a></li>
                     </ul>
                 </li>
 
