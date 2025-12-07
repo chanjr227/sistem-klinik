@@ -51,8 +51,8 @@ if ($result && $result->num_rows > 0) {
             </div>
 
             <ul class="sidebar-menu">
-                <li><a href="../admin/dashboard.php" class="active"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
-                <li><a href="../admin/data_pasien.php"><i class="fa-solid fa-users"></i> Data Pasien</a></li>
+                <li><a href="dashboard.php" class="active"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
+                <li><a href="data_pasien.php"><i class="fa-solid fa-users"></i> Data Pasien</a></li>
 
                 <li class="has-submenu">
                     <a href="#" class="submenu-toggle">

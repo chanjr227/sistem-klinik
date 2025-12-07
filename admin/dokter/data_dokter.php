@@ -109,8 +109,8 @@ $dokter_data = $koneksi->query("SELECT * FROM dokter ORDER BY id_dokter ASC");
             </div>
 
             <ul class="sidebar-menu">
-                <li><a href="../admin/dashboard.php" class="active"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
-                <li><a href="../admin/data_pasien.php"><i class="fa-solid fa-users"></i> Data Pasien</a></li>
+                <li><a href="../dashboard.php" class="active"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
+                <li><a href="../data_pasien.php"><i class="fa-solid fa-users"></i> Data Pasien</a></li>
 
                 <li class="has-submenu">
                     <a href="#" class="submenu-toggle">
@@ -119,9 +119,9 @@ $dokter_data = $koneksi->query("SELECT * FROM dokter ORDER BY id_dokter ASC");
                         <i class="fa-solid fa-angle-right arrow"></i>
                     </a>
                     <ul class="submenu">
-                        <li><a href="../admin/dokter/data_dokter.php">Lihat Data Dokter</a></li>
-                        <li><a href="../admin/dokter/riwayat_konsultasi.php">Riwayat konsultasi</a></li>
-                        <li><a href="../admin/dokter/tambah_dokter.php">Tambah Dokter</a></li>
+                        <li><a href="data_dokter.php">Lihat Data Dokter</a></li>
+                        <li><a href="riwayat_konsultasi.php">Riwayat konsultasi</a></li>
+                        <li><a href="tambah_dokter.php">Tambah Dokter</a></li>
                     </ul>
                 </li>
                 <li class="has-submenu">
@@ -136,10 +136,10 @@ $dokter_data = $koneksi->query("SELECT * FROM dokter ORDER BY id_dokter ASC");
                 </li>
 
 
-                <li><a href="antrian_pasien.php"><i class="fa-solid fa-list"></i> Antrian</a></li>
-                <li><a href="tambah_admin.php"><i class="fa-solid fa-user-plus"></i> Tambah Akun</a></li>
-                <li><a href="laporan.php"><i class="fa-solid fa-file-lines"></i> Laporan</a></li>
-                <li><a href="logout.php" class="logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+                <li><a href="../antrian_pasien.php"><i class="fa-solid fa-list"></i> Antrian</a></li>
+                <li><a href="../tambah_admin.php"><i class="fa-solid fa-user-plus"></i> Tambah Akun</a></li>
+                <li><a href="../laporan.php"><i class="fa-solid fa-file-lines"></i> Laporan</a></li>
+                <li><a href="../logout.php" class="logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
             </ul>
         </aside>
 
