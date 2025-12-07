@@ -100,7 +100,7 @@ $data = mysqli_query($koneksi, "SELECT * FROM obat ORDER BY id_obat DESC");
                         <i class="fa-solid fa-angle-right arrow"></i>
                     </a>
                     <ul class="submenu">
-                        <li><a href="../farmasi/obat.php" class="active"><i class="fa-solid fa-capsules"></i> Menu Obat</a></li>
+                        <li><a href="../farmasi/obat.php" class="active"><i class="fa-solid fa-capsules"></i> Manajemen Obat</a></li>
                     </ul>
                 </li>
 

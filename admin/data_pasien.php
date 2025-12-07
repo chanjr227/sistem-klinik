@@ -79,19 +79,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <body>
     <!-- SIDEBAR -->
-    <aside class="sidebar" id="sidebar">
+    <aside class="sidebar">
         <div class="sidebar-header">
             <i class="fa-solid fa-hospital-user"></i>
             <span>Klinik Sehat</span>
         </div>
 
         <ul class="sidebar-menu">
-            <li><a href="dashboard.php"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
-            <li><a href="data_pasien.php"><i class="fa-solid fa-users"></i> Data Pasien</a></li>
+            <li><a href="../admin/dashboard.php" class="active"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
+            <li><a href="../admin/data_pasien.php"><i class="fa-solid fa-users"></i> Data Pasien</a></li>
 
             <li class="has-submenu">
-                <a href="javascript:void(0)" class="submenu-toggle">
-                    <i class="fa-solid fa-user-doctor"></i> Data Dokter
+                <a href="#" class="submenu-toggle">
+                    <i class="fa-solid fa-user-doctor"></i>
+                    Data Dokter
                     <i class="fa-solid fa-angle-right arrow"></i>
                 </a>
                 <ul class="submenu">
@@ -100,6 +101,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <li><a href="../admin/dokter/tambah_dokter.php">Tambah Dokter</a></li>
                 </ul>
             </li>
+            <li class="has-submenu">
+                <a href="#" class="submenu-toggle">
+                    <i class="fa-solid fa-prescription-bottle"></i>
+                    Data Obat
+                    <i class="fa-solid fa-angle-right arrow"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="../farmasi/obat.php" class="active"><i class="fa-solid fa-capsules"></i> Manajemen Obat</a></li>
+                </ul>
+            </li>
+
 
             <li><a href="antrian_pasien.php"><i class="fa-solid fa-list"></i> Antrian</a></li>
             <li><a href="tambah_admin.php"><i class="fa-solid fa-user-plus"></i> Tambah Akun</a></li>
