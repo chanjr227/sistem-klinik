@@ -93,8 +93,17 @@ $data = mysqli_query($koneksi, "SELECT * FROM obat ORDER BY id_obat DESC");
                         <li><a href="../admin/dokter/tambah_dokter.php">Tambah Dokter</a></li>
                     </ul>
                 </li>
+                <li class="has-submenu">
+                    <a href="#" class="submenu-toggle">
+                        <i class="fa-solid fa-prescription-bottle"></i>
+                        Data Obat
+                        <i class="fa-solid fa-angle-right arrow"></i>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="../farmasi/obat.php" class="active"><i class="fa-solid fa-capsules"></i> Menu Obat</a></li>
+                    </ul>
+                </li>
 
-                <li><a href="../farmasi/obat.php" class="active"><i class="fa-solid fa-capsules"></i> Menu Obat</a></li>
 
                 <li><a href="antrian_pasien.php"><i class="fa-solid fa-list"></i> Antrian</a></li>
                 <li><a href="tambah_admin.php"><i class="fa-solid fa-user-plus"></i> Tambah Akun</a></li>
@@ -289,7 +298,28 @@ $data = mysqli_query($koneksi, "SELECT * FROM obat ORDER BY id_obat DESC");
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // === Submenu toggle ===
+        document.querySelectorAll(".submenu-toggle").forEach(menu => {
+            menu.addEventListener("click", function(e) {
+                e.preventDefault();
 
+                const parent = this.parentElement;
+                parent.classList.toggle("open");
+
+                const submenu = parent.querySelector(".submenu");
+                const arrow = this.querySelector(".arrow");
+
+                if (parent.classList.contains("open")) {
+                    submenu.style.display = "block";
+                    arrow.style.transform = "rotate(90deg)";
+                } else {
+                    submenu.style.display = "none";
+                    arrow.style.transform = "rotate(0deg)";
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
