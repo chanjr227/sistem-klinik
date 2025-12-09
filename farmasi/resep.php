@@ -5,7 +5,7 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-include '../config/db.php'; // Pastikan file ini ada dan variabelnya $koneksi
+include '../config/db.php';
 
 // Ambil data riwayat konsultasi
 $sql = "
@@ -29,24 +29,27 @@ $result = mysqli_query($koneksi, $sql);
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link rel="stylesheet" href="../admin/assets/dashboard.css">
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 </head>
 
 <body>
 
-    <div class="wrapper">
-        <!-- SIDEBAR -->
+    <div class="wrapper d-flex">
+
+        <!-- ============ SIDEBAR ============= -->
         <aside class="sidebar">
             <div class="sidebar-header">
                 <i class="fa-solid fa-hospital-user"></i>
                 <span>Klinik Sehat</span>
             </div>
+
             <ul class="sidebar-menu">
                 <li><a href="../admin/dashboard.php"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
                 <li><a href="../admin/data_pasien.php"><i class="fa-solid fa-users"></i> Data Pasien</a></li>
+
                 <li class="has-submenu">
                     <a href="#" class="submenu-toggle">
-                        <i class="fa-solid fa-user-doctor"></i>
-                        Data Dokter
+                        <i class="fa-solid fa-user-doctor"></i> Data Dokter
                         <i class="fa-solid fa-angle-right arrow"></i>
                     </a>
                     <ul class="submenu">
@@ -55,10 +58,10 @@ $result = mysqli_query($koneksi, $sql);
                         <li><a href="../admin/dokter/tambah_dokter.php">Tambah Dokter</a></li>
                     </ul>
                 </li>
+
                 <li class="has-submenu open">
                     <a href="#" class="submenu-toggle">
-                        <i class="fa-solid fa-prescription-bottle"></i>
-                        Farmasi
+                        <i class="fa-solid fa-prescription-bottle"></i> Farmasi
                         <i class="fa-solid fa-angle-right arrow" style="transform: rotate(90deg);"></i>
                     </a>
                     <ul class="submenu" style="display:block;">
@@ -66,16 +69,18 @@ $result = mysqli_query($koneksi, $sql);
                         <li><a href="../farmasi/obat.php"><i class="fa-solid fa-capsules"></i> Manajemen Obat</a></li>
                     </ul>
                 </li>
+
                 <li><a href="../admin/antrian_pasien.php"><i class="fa-solid fa-list"></i> Antrian</a></li>
                 <li><a href="../admin/tambah_admin.php"><i class="fa-solid fa-user-plus"></i> Tambah Akun</a></li>
                 <li><a href="../admin/laporan.php"><i class="fa-solid fa-file-lines"></i> Laporan</a></li>
                 <li><a href="../auth/logout.php" class="logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
             </ul>
         </aside>
+        <!-- ============ END SIDEBAR ============= -->
 
-        <!-- MAIN CONTENT -->
-        <main class="content">
-            <header class="content-header">
+        <!-- ============ MAIN CONTENT ============= -->
+        <main class="content flex-fill p-4">
+            <header class="content-header mb-4">
                 <h1>💊 Resep Masuk dari Dokter</h1>
                 <p>Daftar resep hasil konsultasi pasien.</p>
             </header>
@@ -105,9 +110,9 @@ $result = mysqli_query($koneksi, $sql);
                                     <td><?= $row['tanggal'] ?></td>
                                     <td><?= $row['diagnosa'] ?></td>
                                     <td>
-                                        <a href="detail_resep.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-primary">
+                                        <button class="btn btn-sm btn-primary detail-btn" data-id="<?= $row['id'] ?>">
                                             <i class="fa-solid fa-eye"></i> Detail Resep
-                                        </a>
+                                        </button>
                                     </td>
                                 </tr>
                             <?php endwhile;
@@ -119,26 +124,64 @@ $result = mysqli_query($koneksi, $sql);
                     </tbody>
                 </table>
             </div>
-
         </main>
     </div>
 
+    <!-- Modal Detail Resep -->
+    <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fa-solid fa-file-medical"></i> Detail Resep</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                </div>
+                <div class="modal-body" id="modalBody">
+                    <p class="text-center">Memuat data...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
     <script>
-        document.querySelectorAll(".submenu-toggle").forEach(menu => {
-            menu.addEventListener("click", function(e) {
+        $(document).ready(function() {
+            // Submenu toggle
+            $('.submenu-toggle').click(function(e) {
                 e.preventDefault();
-                const parent = this.parentElement;
-                parent.classList.toggle("open");
-                const submenu = parent.querySelector(".submenu");
-                const arrow = this.querySelector(".arrow");
-                if (parent.classList.contains("open")) {
-                    submenu.style.display = "block";
-                    arrow.style.transform = "rotate(90deg)";
+                var parent = $(this).parent();
+                parent.toggleClass('open');
+                var submenu = parent.find('.submenu');
+                var arrow = $(this).find('.arrow');
+                if (parent.hasClass('open')) {
+                    submenu.show();
+                    arrow.css('transform', 'rotate(90deg)');
                 } else {
-                    submenu.style.display = "none";
-                    arrow.style.transform = "rotate(0deg)";
+                    submenu.hide();
+                    arrow.css('transform', 'rotate(0deg)');
                 }
+            });
+
+            // Tombol Detail Resep
+            $('.detail-btn').click(function() {
+                var id = $(this).data('id');
+                $('#modalBody').html('<p class="text-center">Memuat data...</p>');
+                var myModal = new bootstrap.Modal(document.getElementById('detailModal'), {});
+                myModal.show();
+
+                $.ajax({
+                    url: 'ajax_detail_resep.php',
+                    method: 'GET',
+                    data: {
+                        id: id
+                    },
+                    success: function(response) {
+                        $('#modalBody').html(response);
+                    },
+                    error: function() {
+                        $('#modalBody').html('<p class="text-danger text-center">Gagal memuat data.</p>');
+                    }
+                });
             });
         });
     </script>
