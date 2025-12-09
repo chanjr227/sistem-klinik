@@ -102,6 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <i class="fa-solid fa-angle-right arrow"></i>
                 </a>
                 <ul class="submenu">
+                    <li><a href="../../farmasi/resep.php" class="active"><i class="fa-solid fa-file-medical"></i> Resep Masuk</a></li>
                     <li><a href="../../farmasi/obat.php" class="active"><i class="fa-solid fa-capsules"></i> Manajemen Obat</a></li>
                 </ul>
             </li>
