@@ -13,11 +13,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tanggal = $_POST['tanggal'];
     $diagnosa = $_POST['diagnosa'];
     $resep_obat = $_POST['resep_obat'];
+    $tindakan = $_POST['tindakan'];
+    $catatan = $_POST['catatan'];
 
+    // 1. Simpan ke tabel riwayat_konsultasi
     $stmt = $koneksi->prepare("INSERT INTO riwayat_konsultasi (id_pasien, id_dokter, tanggal, diagnosa, resep_obat) VALUES (?, ?, ?, ?, ?)");
     $stmt->bind_param("iisss", $id_pasien, $id_dokter, $tanggal, $diagnosa, $resep_obat);
     $stmt->execute();
-    $success = true;
+
+    // 2. Ambil id_pendaftaran terakhir pasien ini dari tabel pendaftaran
+    $result = $koneksi->query("SELECT id_pendaftaran FROM pendaftaran WHERE id_pasien = $id_pasien ORDER BY id_pendaftaran DESC LIMIT 1");
+    if ($result && $result->num_rows > 0) {
+        $pendaftaran = $result->fetch_assoc();
+        $id_pendaftaran = $pendaftaran['id_pendaftaran'];
+
+        // 3. Simpan ke tabel rekam_medis
+        $stmt2 = $koneksi->prepare("INSERT INTO rekam_medis (id_pendaftaran, diagnosa, tindakan, catatan) VALUES (?, ?, ?, ?)");
+        $stmt2->bind_param("isss", $id_pendaftaran, $diagnosa, $tindakan, $catatan);
+        $stmt2->execute();
+
+        $success = true;
+    } else {
+        $error = "❌ Pasien belum memiliki pendaftaran aktif!";
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -32,7 +50,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
     <link rel="stylesheet" href="../assets/dashboard.css">
 
     <style>
@@ -95,6 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <li><a href="tambah_dokter.php">Tambah Dokter</a></li>
                 </ul>
             </li>
+
             <li class="has-submenu">
                 <a href="#" class="submenu-toggle">
                     <i class="fa-solid fa-prescription-bottle"></i>
@@ -107,13 +125,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </ul>
             </li>
 
-
             <li><a href="antrian_pasien.php"><i class="fa-solid fa-list"></i> Antrian</a></li>
             <li><a href="tambah_admin.php"><i class="fa-solid fa-user-plus"></i> Tambah Akun</a></li>
             <li><a href="laporan.php"><i class="fa-solid fa-file-lines"></i> Laporan</a></li>
             <li><a href="logout.php" class="logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
         </ul>
     </aside>
+
     <!-- MAIN CONTENT -->
     <main class="content">
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -124,7 +142,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
         <?php if (isset($success)): ?>
-            <div class="alert alert-success">✅ Data konsultasi berhasil disimpan!</div>
+            <div class="alert alert-success">✅ Data konsultasi dan rekam medis berhasil disimpan!</div>
+        <?php elseif (isset($error)): ?>
+            <div class="alert alert-danger"><?= $error ?></div>
         <?php endif; ?>
 
         <div class="card p-3">
@@ -147,10 +167,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 r.*, 
                                 p.nama AS nama_pasien, 
                                 d.nama AS nama_dokter, 
-                                d.spesialisasi, 
-                                d.jadwal_praktik
+                                d.spesialisasi
                             FROM riwayat_konsultasi r
-                            LEFT JOIN pasien p ON r.id_pasien = p.id_pasien
+                            LEFT JOIN pasien_akun p ON r.id_pasien = p.id_pasien
                             LEFT JOIN dokter d ON r.id_dokter = d.id_dokter
                             ORDER BY r.id DESC
                         ";
@@ -195,7 +214,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <select name="id_pasien" class="form-select" required>
                                     <option value="">-- Pilih Pasien --</option>
                                     <?php
-                                    $pasien = $koneksi->query("SELECT id_pasien, nama FROM pasien");
+                                    $pasien = $koneksi->query("SELECT id_pasien, nama FROM pasien_akun");
                                     while ($p = $pasien->fetch_assoc()) {
                                         echo "<option value='{$p['id_pasien']}'>{$p['nama']}</option>";
                                     }
@@ -222,6 +241,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="mb-3">
                             <label class="form-label">Diagnosa</label>
                             <textarea name="diagnosa" class="form-control" rows="3" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Tindakan</label>
+                            <textarea name="tindakan" class="form-control" rows="2"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Catatan</label>
+                            <textarea name="catatan" class="form-control" rows="2"></textarea>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Resep Obat</label>
