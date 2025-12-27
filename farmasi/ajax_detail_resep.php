@@ -37,23 +37,27 @@ if (!$konsultasi) {
 <head>
     <meta charset="UTF-8">
     <title>Detail Resep</title>
-    <link rel="stylesheet" href="assets/detail_resep.css">
+    <link rel="stylesheet" href="assets/cetak_resep.css">
 </head>
 
 <body>
 
     <div class="container">
 
-        <h2>KLINIK SEHAT</h2>
-        <h4>DETAIL RESEP DOKTER</h4>
-        <hr>
+        <div class="header">
+            <h2>KLINIK SEHAT</h2>
+            <p>Jl. Contoh No. 123 • Telp. 0812xxxxxxx</p>
+        </div>
 
-        <p><strong>Pasien :</strong> <?= $konsultasi['nama_pasien'] ?></p>
-        <p><strong>Dokter :</strong> <?= $konsultasi['nama_dokter'] ?> (<?= $konsultasi['spesialisasi'] ?>)</p>
-        <p><strong>Tanggal :</strong> <?= $konsultasi['tanggal'] ?></p>
-        <p><strong>Diagnosa :</strong> <?= $konsultasi['diagnosa'] ?></p>
+        <div class="info">
+            <p><strong>Pasien:</strong> <?= $konsultasi['nama_pasien'] ?></p>
+            <p><strong>Tanggal:</strong> <?= $konsultasi['tanggal'] ?></p>
+            <p><strong>Dokter:</strong> <?= $konsultasi['nama_dokter'] ?></p>
+            <p><strong>Spesialis:</strong> <?= $konsultasi['spesialisasi'] ?></p>
+        </div>
 
-        <h5>Resep Obat</h5>
+        <div class="resep-title">Resep Obat</div>
+
         <div class="resep">
             <?= nl2br($konsultasi['resep_obat']) ?>
         </div>
