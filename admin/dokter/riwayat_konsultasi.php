@@ -4,37 +4,71 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: ../auth/login.php");
     exit;
 }
+
 include '../../config/db.php';
 
-// Proses tambah data konsultasi
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $id_pasien = $_POST['id_pasien'];
-    $id_dokter = $_POST['id_dokter'];
-    $tanggal = $_POST['tanggal'];
-    $diagnosa = $_POST['diagnosa'];
+
+    $id_pasien  = $_POST['id_pasien'];
+    $id_dokter  = $_POST['id_dokter'];
+    $tanggal    = $_POST['tanggal'];
+    $diagnosa   = $_POST['diagnosa'];
     $resep_obat = $_POST['resep_obat'];
-    $tindakan = $_POST['tindakan'];
-    $catatan = $_POST['catatan'];
+    $tindakan   = $_POST['tindakan'];
+    $catatan    = $_POST['catatan'];
 
-    // 1. Simpan ke tabel riwayat_konsultasi
-    $stmt = $koneksi->prepare("INSERT INTO riwayat_konsultasi (id_pasien, id_dokter, tanggal, diagnosa, resep_obat) VALUES (?, ?, ?, ?, ?)");
-    $stmt->bind_param("iisss", $id_pasien, $id_dokter, $tanggal, $diagnosa, $resep_obat);
+    // 1️⃣ Ambil pendaftaran terakhir pasien
+    $stmt = $koneksi->prepare("
+        SELECT id_pendaftaran 
+        FROM pendaftaran 
+        WHERE id_pasien = ? 
+        ORDER BY id_pendaftaran DESC 
+        LIMIT 1
+    ");
+    $stmt->bind_param("i", $id_pasien);
     $stmt->execute();
+    $result = $stmt->get_result();
 
-    // 2. Ambil id_pendaftaran terakhir pasien ini dari tabel pendaftaran
-    $result = $koneksi->query("SELECT id_pendaftaran FROM pendaftaran WHERE id_pasien = $id_pasien ORDER BY id_pendaftaran DESC LIMIT 1");
-    if ($result && $result->num_rows > 0) {
-        $pendaftaran = $result->fetch_assoc();
-        $id_pendaftaran = $pendaftaran['id_pendaftaran'];
+    if ($result->num_rows === 0) {
+        $error = "❌ Pasien belum memiliki pendaftaran!";
+    } else {
 
-        // 3. Simpan ke tabel rekam_medis
-        $stmt2 = $koneksi->prepare("INSERT INTO rekam_medis (id_pendaftaran, diagnosa, tindakan, catatan) VALUES (?, ?, ?, ?)");
-        $stmt2->bind_param("isss", $id_pendaftaran, $diagnosa, $tindakan, $catatan);
+        $row = $result->fetch_assoc();
+        $id_pendaftaran = $row['id_pendaftaran'];
+
+        // 2️⃣ Simpan riwayat konsultasi
+        $stmt1 = $koneksi->prepare("
+            INSERT INTO riwayat_konsultasi 
+            (id_pasien, id_dokter, id_pendaftaran, tanggal, diagnosa, resep_obat)
+            VALUES (?, ?, ?, ?, ?, ?)
+        ");
+        $stmt1->bind_param(
+            "iiisss",
+            $id_pasien,
+            $id_dokter,
+            $id_pendaftaran,
+            $tanggal,
+            $diagnosa,
+            $resep_obat
+        );
+        $stmt1->execute();
+
+        // 3️⃣ Simpan rekam medis (HANYA SEKALI)
+        $stmt2 = $koneksi->prepare("
+            INSERT INTO rekam_medis 
+            (id_pendaftaran, diagnosa, tindakan, catatan)
+            VALUES (?, ?, ?, ?)
+        ");
+        $stmt2->bind_param(
+            "isss",
+            $id_pendaftaran,
+            $diagnosa,
+            $tindakan,
+            $catatan
+        );
         $stmt2->execute();
 
         $success = true;
-    } else {
-        $error = "❌ Pasien belum memiliki pendaftaran aktif!";
     }
 }
 ?>
