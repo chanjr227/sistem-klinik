@@ -10,14 +10,21 @@ include '../config/db.php';
 // Ambil data riwayat konsultasi
 $sql = "
     SELECT 
-        r.id, r.tanggal, r.diagnosa,
+        r.id,
+        r.tanggal,
+        r.diagnosa,
+        r.resep_obat,
         p.nama AS nama_pasien,
-        d.nama AS nama_dokter, d.spesialisasi
+        d.nama AS nama_dokter,
+        d.spesialisasi
     FROM riwayat_konsultasi r
-    LEFT JOIN pasien p ON r.id_pasien = p.id_pasien
-    LEFT JOIN dokter d ON r.id_dokter = d.id_dokter
+    JOIN pasien_akun p ON r.id_pasien = p.id_pasien
+    JOIN dokter d ON r.id_dokter = d.id_dokter
+    WHERE r.resep_obat IS NOT NULL
+      AND r.resep_obat != ''
     ORDER BY r.id DESC
 ";
+
 $result = mysqli_query($koneksi, $sql);
 ?>
 <!DOCTYPE html>
@@ -110,8 +117,8 @@ $result = mysqli_query($koneksi, $sql);
                                     <td><?= $row['tanggal'] ?></td>
                                     <td><?= $row['diagnosa'] ?></td>
                                     <td>
-                                        <button class="btn btn-sm btn-primary detail-btn" data-id="<?= $row['id'] ?>">
-                                            <i class="fa-solid fa-eye"></i> Detail Resep
+                                        <button class="btn btn-sm btn-success detail-btn" data-id="<?= $row['id'] ?>">
+                                            <i class="fa-solid fa-prescription-bottle"></i> Proses Resep
                                         </button>
                                     </td>
                                 </tr>

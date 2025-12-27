@@ -1,142 +1,65 @@
-* {
-  box-sizing: border-box;
-}
-
 body {
-  font-family: "Segoe UI", Arial, sans-serif;
-  background: #eef2f5;
-  margin: 0;
-  padding: 20px;
-  color: #333;
+  font-family: Arial, sans-serif;
+  background: #f4f6f8;
 }
 
-.container {
-  max-width: 800px;
-  margin: auto;
-  background: #ffffff;
-  padding: 30px 35px;
-  border-radius: 10px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+.resep-container {
+  width: 700px;
+  margin: 30px auto;
+  background: white;
+  padding: 25px;
+  border-radius: 8px;
 }
 
-/* HEADER */
 .header {
   text-align: center;
-  margin-bottom: 20px;
 }
 
 .header h2 {
   margin: 0;
-  font-size: 26px;
-  color: #0d6efd;
 }
 
-.header p {
-  margin: 4px 0;
-  font-size: 14px;
-  color: #666;
-}
-
-hr {
-  border: none;
-  border-top: 2px solid #0d6efd;
-  margin: 20px 0;
-}
-
-/* INFO PASIEN */
 .info {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px 20px;
-  margin-bottom: 25px;
-  font-size: 14px;
+  width: 100%;
+  margin-top: 15px;
 }
 
-.info p {
-  margin: 0;
+.info td {
+  padding: 4px;
 }
 
-.info strong {
-  color: #000;
+.judul {
+  margin-top: 20px;
 }
 
-/* RESEP */
-.resep-title {
-  font-size: 16px;
-  font-weight: 600;
-  margin-bottom: 8px;
+.resep-box {
+  border: 1px dashed #333;
+  padding: 15px;
+  min-height: 120px;
+  margin-top: 10px;
 }
 
-.resep {
-  background: #f8f9fa;
-  border-left: 5px solid #0d6efd;
-  padding: 15px 18px;
-  min-height: 90px;
-  line-height: 1.6;
-  font-size: 15px;
-}
-
-/* TTD */
 .ttd {
   margin-top: 50px;
   text-align: right;
 }
 
-.ttd p {
-  margin: 0;
-  font-size: 14px;
+.aksi {
+  text-align: center;
+  margin-top: 20px;
 }
 
-/* BUTTON */
-.btn-area {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  margin-top: 35px;
-}
-
-.btn-area button,
-.btn-area a {
-  border: none;
-  padding: 10px 22px;
-  font-size: 14px;
-  border-radius: 6px;
+.aksi button {
+  padding: 8px 15px;
+  margin: 5px;
   cursor: pointer;
-  text-decoration: none;
 }
 
-.btn-area button {
-  background: #0d6efd;
-  color: #fff;
-}
-
-.btn-area button:hover {
-  background: #0b5ed7;
-}
-
-.btn-area .btn-back {
-  background: #6c757d;
-  color: #fff;
-}
-
-.btn-area .btn-back:hover {
-  background: #5c636a;
-}
-
-/* PRINT MODE */
 @media print {
   body {
-    background: #fff;
-    padding: 0;
+    background: white;
   }
-
-  .container {
-    box-shadow: none;
-    border-radius: 0;
-    padding: 20px;
-  }
-
-  .btn-area {
+  .no-print {
     display: none;
   }
 }
