@@ -35,20 +35,16 @@ $data = $q->fetch_assoc();
 
 <div id="hasilProses" class="mt-3"></div>
 
-
 <script>
     $(document).on('submit', '#prosesForm', function(e) {
         e.preventDefault();
-
-        console.log('Proses obat diklik'); // ⬅️ DEBUG WAJIB
 
         $.ajax({
             url: 'proses_obat.php',
             type: 'POST',
             data: $(this).serialize(),
-            success: function(res) {
-                console.log(res); // DEBUG
-                let data = JSON.parse(res);
+            dataType: 'json', // ⬅️ PENTING
+            success: function(data) {
 
                 if (data.status === 'ok') {
                     $('#hasilProses').html(`
@@ -58,13 +54,20 @@ $data = $q->fetch_assoc();
                     </div>
                 `);
                 } else {
-                    $('#hasilProses').html(
-                        `<div class="alert alert-danger">${data.msg}</div>`
-                    );
+                    $('#hasilProses').html(`
+                    <div class="alert alert-danger">
+                        ❌ ${data.msg}
+                    </div>
+                `);
                 }
             },
-            error: function() {
-                alert('❌ AJAX error');
+            error: function(xhr) {
+                console.error(xhr.responseText);
+                $('#hasilProses').html(`
+                <div class="alert alert-danger">
+                    ❌ Terjadi kesalahan server
+                </div>
+            `);
             }
         });
     });

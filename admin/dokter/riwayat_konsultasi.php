@@ -13,65 +13,84 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id_dokter  = $_POST['id_dokter'];
     $tanggal    = $_POST['tanggal'];
     $diagnosa   = $_POST['diagnosa'];
-    $resep_obat = $_POST['resep_obat'];
+    $resep_obat = trim($_POST['resep_obat']);
     $tindakan   = $_POST['tindakan'];
     $catatan    = $_POST['catatan'];
 
-    // 1️⃣ Ambil pendaftaran terakhir pasien
-    $stmt = $koneksi->prepare("
-        SELECT id_pendaftaran 
-        FROM pendaftaran 
-        WHERE id_pasien = ? 
-        ORDER BY id_pendaftaran DESC 
-        LIMIT 1
-    ");
-    $stmt->bind_param("i", $id_pasien);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    /* ==========================
+       VALIDASI FORMAT RESEP
+       FORMAT WAJIB:
+       NamaObat spasi Jumlah
+       ========================== */
+    $lines = explode("\n", $resep_obat);
+    foreach ($lines as $line) {
+        if (!trim($line)) continue;
 
-    if ($result->num_rows === 0) {
-        $error = "❌ Pasien belum memiliki pendaftaran!";
-    } else {
+        if (!preg_match('/^.+\s+\d+$/', trim($line))) {
+            $error = "❌ Format resep salah! Gunakan: NamaObat spasi Jumlah (contoh: Paracetamol 2)";
+            break;
+        }
+    }
 
-        $row = $result->fetch_assoc();
-        $id_pendaftaran = $row['id_pendaftaran'];
+    if (!isset($error)) {
 
-        // 2️⃣ Simpan riwayat konsultasi
-        $stmt1 = $koneksi->prepare("
-            INSERT INTO riwayat_konsultasi 
-            (id_pasien, id_dokter, id_pendaftaran, tanggal, diagnosa, resep_obat)
-            VALUES (?, ?, ?, ?, ?, ?)
+        // 1️⃣ Ambil pendaftaran terakhir pasien
+        $stmt = $koneksi->prepare("
+            SELECT id_pendaftaran 
+            FROM pendaftaran 
+            WHERE id_pasien = ? 
+            ORDER BY id_pendaftaran DESC 
+            LIMIT 1
         ");
-        $stmt1->bind_param(
-            "iiisss",
-            $id_pasien,
-            $id_dokter,
-            $id_pendaftaran,
-            $tanggal,
-            $diagnosa,
-            $resep_obat
-        );
-        $stmt1->execute();
+        $stmt->bind_param("i", $id_pasien);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-        // 3️⃣ Simpan rekam medis (HANYA SEKALI)
-        $stmt2 = $koneksi->prepare("
-            INSERT INTO rekam_medis 
-            (id_pendaftaran, diagnosa, tindakan, catatan)
-            VALUES (?, ?, ?, ?)
-        ");
-        $stmt2->bind_param(
-            "isss",
-            $id_pendaftaran,
-            $diagnosa,
-            $tindakan,
-            $catatan
-        );
-        $stmt2->execute();
+        if ($result->num_rows === 0) {
+            $error = "❌ Pasien belum memiliki pendaftaran!";
+        } else {
 
-        $success = true;
+            $row = $result->fetch_assoc();
+            $id_pendaftaran = $row['id_pendaftaran'];
+
+            // 2️⃣ Simpan riwayat konsultasi
+            $stmt1 = $koneksi->prepare("
+                INSERT INTO riwayat_konsultasi 
+                (id_pasien, id_dokter, id_pendaftaran, tanggal, diagnosa, resep_obat, status_obat)
+                VALUES (?, ?, ?, ?, ?, ?, 'pending')
+            ");
+            $stmt1->bind_param(
+                "iiisss",
+                $id_pasien,
+                $id_dokter,
+                $id_pendaftaran,
+                $tanggal,
+                $diagnosa,
+                $resep_obat
+            );
+            $stmt1->execute();
+
+            // 3️⃣ Simpan rekam medis
+            $stmt2 = $koneksi->prepare("
+                INSERT INTO rekam_medis 
+                (id_pendaftaran, diagnosa, tindakan, catatan)
+                VALUES (?, ?, ?, ?)
+            ");
+            $stmt2->bind_param(
+                "isss",
+                $id_pendaftaran,
+                $diagnosa,
+                $tindakan,
+                $catatan
+            );
+            $stmt2->execute();
+
+            $success = true;
+        }
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 
@@ -285,9 +304,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <textarea name="catatan" class="form-control" rows="2"></textarea>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Resep Obat</label>
-                            <textarea name="resep_obat" class="form-control" rows="3"></textarea>
+                            <label class="form-label">
+                                Resep Obat
+                                <small class="text-muted">
+                                    (1 baris = 1 obat, format: NamaObat spasi Jumlah)
+                                </small>
+                            </label>
+                            <textarea name="resep_obat"
+                                class="form-control"
+                                rows="4"
+                                required
+                                placeholder="Contoh:
+                                Paracetamol 2
+                                Amoxicillin 1
+                                Vitamin C 3"></textarea>
                         </div>
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
