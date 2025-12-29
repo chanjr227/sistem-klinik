@@ -22,8 +22,50 @@ $data = $q->fetch_assoc();
     <?= nl2br($data['resep_obat']) ?>
 </div>
 
-<a href="cetak_resep.php?id=<?= $id ?>"
-    target="_blank"
-    class="btn btn-success">
+<a href="cetak_resep.php?id=<?= $id ?>" target="_blank" class="btn btn-success mb-2">
     🖨️ Cetak Resep
 </a>
+
+<form id="prosesForm">
+    <input type="hidden" name="id_konsultasi" value="<?= $id ?>">
+    <button type="submit" class="btn btn-warning">
+        ⚙️ Proses Obat
+    </button>
+</form>
+
+<div id="hasilProses" class="mt-3"></div>
+
+
+<script>
+    $(document).on('submit', '#prosesForm', function(e) {
+        e.preventDefault();
+
+        console.log('Proses obat diklik'); // ⬅️ DEBUG WAJIB
+
+        $.ajax({
+            url: 'proses_obat.php',
+            type: 'POST',
+            data: $(this).serialize(),
+            success: function(res) {
+                console.log(res); // DEBUG
+                let data = JSON.parse(res);
+
+                if (data.status === 'ok') {
+                    $('#hasilProses').html(`
+                    <div class="alert alert-success">
+                        ✅ Obat berhasil diproses<br>
+                        <strong>Total Harga:</strong> Rp ${data.total}
+                    </div>
+                `);
+                } else {
+                    $('#hasilProses').html(
+                        `<div class="alert alert-danger">${data.msg}</div>`
+                    );
+                }
+            },
+            error: function() {
+                alert('❌ AJAX error');
+            }
+        });
+    });
+</script>

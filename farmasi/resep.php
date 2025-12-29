@@ -153,13 +153,18 @@ $result = mysqli_query($koneksi, $sql);
 
     <script>
         $(document).ready(function() {
-            // Submenu toggle
+
+            /* ===============================
+               SUBMENU SIDEBAR
+            ================================ */
             $('.submenu-toggle').click(function(e) {
                 e.preventDefault();
                 var parent = $(this).parent();
                 parent.toggleClass('open');
+
                 var submenu = parent.find('.submenu');
                 var arrow = $(this).find('.arrow');
+
                 if (parent.hasClass('open')) {
                     submenu.show();
                     arrow.css('transform', 'rotate(90deg)');
@@ -169,11 +174,15 @@ $result = mysqli_query($koneksi, $sql);
                 }
             });
 
-            // Tombol Detail Resep
+            /* ===============================
+               DETAIL RESEP (MODAL)
+            ================================ */
             $('.detail-btn').click(function() {
                 var id = $(this).data('id');
+
                 $('#modalBody').html('<p class="text-center">Memuat data...</p>');
-                var myModal = new bootstrap.Modal(document.getElementById('detailModal'), {});
+
+                var myModal = new bootstrap.Modal(document.getElementById('detailModal'));
                 myModal.show();
 
                 $.ajax({
@@ -186,12 +195,57 @@ $result = mysqli_query($koneksi, $sql);
                         $('#modalBody').html(response);
                     },
                     error: function() {
-                        $('#modalBody').html('<p class="text-danger text-center">Gagal memuat data.</p>');
+                        $('#modalBody').html(
+                            '<p class="text-danger text-center">Gagal memuat data.</p>'
+                        );
                     }
                 });
             });
+
+        });
+
+        /* ===============================
+           PROSES OBAT (AJAX)
+           WAJIB DI LUAR ready()
+        =============================== */
+        $(document).on('submit', '#prosesForm', function(e) {
+            e.preventDefault();
+
+            $.ajax({
+                url: 'proses_obat.php',
+                type: 'POST',
+                data: $(this).serialize(),
+                dataType: 'json',
+                success: function(res) {
+                    console.log(res);
+
+                    if (res.status === 'ok') {
+                        $('#hasilProses').html(`
+                    <div class="alert alert-success">
+                        ✅ Obat berhasil diproses<br>
+                        <strong>Total Harga:</strong> Rp ${res.total}
+                    </div>
+                `);
+                    } else {
+                        $('#hasilProses').html(`
+                    <div class="alert alert-danger">
+                        ❌ ${res.msg}
+                    </div>
+                `);
+                    }
+                },
+                error: function(xhr) {
+                    console.error(xhr.responseText);
+                    $('#hasilProses').html(`
+                <div class="alert alert-danger">
+                    ❌ Terjadi kesalahan server
+                </div>
+            `);
+                }
+            });
         });
     </script>
+
 
 </body>
 
