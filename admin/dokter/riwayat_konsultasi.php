@@ -36,12 +36,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // 1️⃣ Ambil pendaftaran terakhir pasien
         $stmt = $koneksi->prepare("
-            SELECT id_pendaftaran 
-            FROM pendaftaran 
-            WHERE id_pasien = ? 
-            ORDER BY id_pendaftaran DESC 
-            LIMIT 1
-        ");
+    SELECT id_pendaftaran 
+    FROM pendaftaran 
+    WHERE id_pasien = ?
+    AND status != 'selesai'
+    ORDER BY id_pendaftaran DESC
+    LIMIT 1
+");
+
         $stmt->bind_param("i", $id_pasien);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -267,7 +269,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <select name="id_pasien" class="form-select" required>
                                     <option value="">-- Pilih Pasien --</option>
                                     <?php
-                                    $pasien = $koneksi->query("SELECT id_pasien, nama FROM pasien_akun");
+                                    $pasien = $koneksi->query("
+    SELECT DISTINCT p.id_pasien, p.nama
+    FROM pasien p
+    JOIN pendaftaran d ON p.id_pasien = d.id_pasien
+    WHERE d.status != 'selesai'
+");
+
                                     while ($p = $pasien->fetch_assoc()) {
                                         echo "<option value='{$p['id_pasien']}'>{$p['nama']}</option>";
                                     }
