@@ -88,12 +88,17 @@ include '../config/db.php';
                         <tbody>
                             <?php
                             $sql = "
-                            SELECT rm.*, r.tanggal, p.nama AS nama_pasien 
-                            FROM rekam_medis rm
-                            LEFT JOIN riwayat_konsultasi r ON rm.id_pendaftaran = r.id
-                            LEFT JOIN pasien p ON r.id_pasien = p.id_pasien
-                            ORDER BY r.tanggal DESC
-                        ";
+                                SELECT 
+                                    rm.*, 
+                                        r.tanggal,
+                                        p.nama AS nama_pasien
+                                    FROM rekam_medis rm
+                                        LEFT JOIN riwayat_konsultasi r 
+                                        ON rm.id_pendaftaran = r.id_pendaftaran
+                                        LEFT JOIN pasien p 
+                                        ON r.id_pasien = p.id_pasien
+                                        ORDER BY r.tanggal DESC
+                                ";
                             $result = $koneksi->query($sql);
                             if ($result && $result->num_rows > 0) {
                                 $no = 1;

@@ -224,7 +224,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 d.nama AS nama_dokter, 
                                 d.spesialisasi
                             FROM riwayat_konsultasi r
-                            LEFT JOIN pasien_akun p ON r.id_pasien = p.id_pasien
+                            LEFT JOIN pasien p ON r.id_pasien = p.id_pasien
                             LEFT JOIN dokter d ON r.id_dokter = d.id_dokter
                             ORDER BY r.id DESC
                         ";
