@@ -6,10 +6,13 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 include '../config/db.php';
-$result = $koneksi->query("SELECT p.id_pasien, p.nama, p.tanggal_lahir, p.jenis_kelamin, p.no_hp, d.nama AS nama_dokter 
-                           FROM pasien p
-                           LEFT JOIN dokter d ON p.id_dokter = d.id_dokter
-                           ORDER BY p.id_pasien DESC");
+$result = $koneksi->query("
+SELECT p.id_pasien, p.nama, p.tanggal_lahir, p.jenis_kelamin, p.no_hp, 
+       p.id_dokter, d.nama AS nama_dokter 
+FROM pasien p
+LEFT JOIN dokter d ON p.id_dokter = d.id_dokter
+ORDER BY p.id_pasien DESC
+");
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -22,6 +25,7 @@ $result = $koneksi->query("SELECT p.id_pasien, p.nama, p.tanggal_lahir, p.jenis_
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
         /* Tambahkan style submenu */
@@ -140,7 +144,12 @@ $result = $koneksi->query("SELECT p.id_pasien, p.nama, p.tanggal_lahir, p.jenis_
                                     <td><?= $row['no_hp'] ?></td>
                                     <td><?= $row['nama_dokter'] ?? '-' ?></td>
                                     <td>
-                                        <a href="edit.php?id=<?= $row['id_pasien'] ?>" class="btn-edit">✏️</a>
+                                        <button class="btn-view btn-rekam"
+                                            data-id="<?= $row['id_pasien'] ?>"
+                                            data-nama="<?= htmlspecialchars($row['nama']) ?>"
+                                            data-dokter="<?= $row['id_dokter'] ?>">
+                                            👁️
+                                        </button>
                                         <a href="hapus.php?id=<?= $row['id_pasien'] ?>" class="btn-delete"
                                             onclick="return confirm('Yakin ingin menghapus pasien ini?')">🗑️</a>
                                     </td>
@@ -154,9 +163,63 @@ $result = $koneksi->query("SELECT p.id_pasien, p.nama, p.tanggal_lahir, p.jenis_
                     </tbody>
                 </table>
             </section>
+            <div class="modal fade" id="modalRekam" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form action="simpan_rekam.php" method="POST">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Tambah Rekam Medis</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+
+                            <div class="modal-body">
+                                <input type="hidden" name="id_pasien" id="id_pasien">
+                                <input type="hidden" name="id_dokter" id="id_dokter">
+                                <div class="mb-2">
+                                    <label>Nama Pasien</label>
+                                    <input type="text" id="nama_pasien" class="form-control" readonly>
+                                </div>
+
+                                <div class="mb-2">
+                                    <label>Diagnosa</label>
+                                    <input type="text" name="diagnosa" class="form-control" required>
+                                </div>
+
+                                <div class="mb-2">
+                                    <label>Tindakan</label>
+                                    <input type="text" name="tindakan" class="form-control" required>
+                                </div>
+
+                                <div class="mb-2">
+                                    <label>Catatan</label>
+                                    <textarea name="catatan" class="form-control"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success">Simpan</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.querySelectorAll('.btn-rekam').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.getElementById('id_pasien').value = this.dataset.id;
+                document.getElementById('nama_pasien').value = this.dataset.nama;
+                document.getElementById('id_dokter').value = this.dataset.dokter;
+
+                let modal = new bootstrap.Modal(document.getElementById('modalRekam'));
+                modal.show();
+            });
+        });
+    </script>
     <script>
         // === SUBMENU TOGGLE ===
         document.querySelectorAll(".submenu-toggle").forEach(menu => {
