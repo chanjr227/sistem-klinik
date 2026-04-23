@@ -21,6 +21,7 @@ include '../config/db.php';
 
     <!-- CSS -->
     <link rel="stylesheet" href="assets/dashboard.css">
+    <link rel="stylesheet" href="assets/rekam_medis.css">
 
 
 </head>
@@ -69,7 +70,7 @@ include '../config/db.php';
         </aside>
 
         <!-- MAIN CONTENT -->
-        <main class="content flex-fill">
+        <main class="content flex-fill rekam-page">
             <h2 class="mb-4">Data Rekam Medis Pasien</h2>
 
             <div class="card p-3">

@@ -1,0 +1,92 @@
+/* === WRAPPER KHUSUS HALAMAN REKAM MEDIS === */
+.rekam-page {
+  padding: 20px 30px;
+}
+
+/* === CARD === */
+.rekam-page .card {
+  border-radius: 14px;
+  border: none;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  padding: 20px;
+}
+
+/* === TABLE WRAPPER === */
+.rekam-page .table-responsive {
+  overflow-x: auto;
+}
+
+/* === TABLE UTAMA === */
+.rekam-page .table {
+  width: 100%;
+  min-width: 1000px; /* bikin melebar */
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+/* === HEADER TABLE === */
+.rekam-page .table thead {
+  background: #4da3ff;
+  color: white;
+}
+
+.rekam-page .table th {
+  text-align: center;
+  font-weight: 600;
+  padding: 12px;
+  font-size: 14px;
+}
+
+/* === ISI TABLE === */
+.rekam-page .table td {
+  padding: 12px;
+  font-size: 14px;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+/* === STRIPED ROW === */
+.rekam-page .table tbody tr:nth-child(even) {
+  background: #f9fbfd;
+}
+
+/* === HOVER EFFECT === */
+.rekam-page .table tbody tr:hover {
+  background: #eef6ff;
+  transition: 0.2s;
+}
+
+/* === BORDER HALUS === */
+.rekam-page .table-bordered {
+  border: 1px solid #e0e6ed;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* === KOLOM KHUSUS BIAR PROPORSIONAL === */
+.rekam-page th:nth-child(1) {
+  width: 60px;
+}
+.rekam-page th:nth-child(2) {
+  width: 200px;
+}
+.rekam-page th:nth-child(3) {
+  width: 180px;
+}
+.rekam-page th:nth-child(4) {
+  width: 200px;
+}
+.rekam-page th:nth-child(5) {
+  width: 200px;
+}
+
+/* === TEXT WRAP UNTUK CATATAN === */
+.rekam-page td:last-child {
+  white-space: normal;
+}
+
+/* === EMPTY STATE === */
+.rekam-page .text-muted {
+  font-style: italic;
+  padding: 20px;
+}
