@@ -2,14 +2,25 @@
 session_start();
 include '../config/db.php';
 
-$id_pasien = $_SESSION['id_pasien']; // dari login pasien
+// ✅ TEST SESSION DI SINI
+var_dump($_SESSION);
+die();
+
+if (!isset($_SESSION['id_pasien'])) {
+    die("❌ Session id_pasien tidak ada. Silakan login ulang.");
+}
+
+$id_pasien = $_SESSION['id_pasien'];
 
 $stmt = $koneksi->prepare("
     INSERT INTO pendaftaran (id_pasien, tanggal_daftar, status)
-    VALUES (?, CURDATE(), 'menunggu')
+    VALUES (?, NOW(), 'menunggu')
 ");
-$stmt->bind_param("i", $id_pasien);
-$stmt->execute();
 
-header("Location: dashboard_pasien.php");
-exit;
+$stmt->bind_param("i", $id_pasien);
+
+if (!$stmt->execute()) {
+    die("Error: " . $stmt->error);
+}
+
+echo "✅ Pendaftaran berhasil";
