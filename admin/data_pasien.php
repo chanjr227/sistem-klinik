@@ -89,16 +89,16 @@ include '../config/db.php';
                             <?php
                             $sql = "
                                 SELECT 
-                                    rm.*, 
-                                        r.tanggal,
-                                        p.nama AS nama_pasien
+                                    rm.*,
+                                    p.nama AS nama_pasien,
+                                    pd.tanggal_daftar AS tanggal
                                     FROM rekam_medis rm
-                                        LEFT JOIN riwayat_konsultasi r 
-                                        ON rm.id_pendaftaran = r.id_pendaftaran
-                                        LEFT JOIN pasien p 
-                                        ON r.id_pasien = p.id_pasien
-                                        ORDER BY r.tanggal DESC
-                                ";
+                                    JOIN pendaftaran pd 
+                                        ON rm.id_pendaftaran = pd.id_pendaftaran
+                                    JOIN pasien p 
+                                        ON pd.id_pasien = p.id_pasien
+                                    ORDER BY pd.tanggal_daftar DESC
+                                    ";
                             $result = $koneksi->query($sql);
                             if ($result && $result->num_rows > 0) {
                                 $no = 1;
