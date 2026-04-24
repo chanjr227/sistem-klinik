@@ -10,16 +10,15 @@ include '../config/db.php';
 $labels = [];
 $values = [];
 
-$sql = "SELECT DATE(tanggal_daftar) AS tgl, COUNT(*) AS total 
-        FROM pasien
-        GROUP BY DATE(tanggal_daftar)
-        ORDER BY tgl ASC";
+$sql = "SELECT DATE(tanggal_daftar) as tanggal, COUNT(*) as total
+FROM pendaftaran
+GROUP BY DATE(tanggal_daftar);";
 
 $result = $koneksi->query($sql);
 
 if ($result && $result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        $labels[] = date('d M', strtotime($row['tgl']));
+        $labels[] = date('d M', strtotime($row['tanggal']));
         $values[] = (int)$row['total'];
     }
 }

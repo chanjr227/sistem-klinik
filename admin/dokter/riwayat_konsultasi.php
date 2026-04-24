@@ -34,15 +34,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!isset($error)) {
 
-        // 1️⃣ Ambil pendaftaran terakhir pasien
+        //Ambil pendaftaran terakhir pasien
         $stmt = $koneksi->prepare("
-    SELECT id_pendaftaran 
-    FROM pendaftaran 
-    WHERE id_pasien = ?
-    AND status != 'selesai'
-    ORDER BY id_pendaftaran DESC
-    LIMIT 1
-");
+            SELECT id_pendaftaran 
+                FROM pendaftaran 
+                    WHERE id_pasien = ?
+                    AND status != 'selesai'
+                    ORDER BY id_pendaftaran DESC
+                    LIMIT 1
+            ");
 
         $stmt->bind_param("i", $id_pasien);
         $stmt->execute();
@@ -90,6 +90,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $catatan
             );
             $stmt2->execute();
+            // ✅ UPDATE STATUS PENDAFTARAN JADI SELESAI
+            $updateStatus = $koneksi->prepare("
+                UPDATE pendaftaran 
+                    SET status = 'selesai' 
+                    WHERE id_pendaftaran = ?
+                ");
+            $updateStatus->bind_param("i", $id_pendaftaran);
+            $updateStatus->execute();
 
             $success = true;
         }
@@ -274,12 +282,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <option value="">-- Pilih Pasien --</option>
                                     <?php
                                     $pasien = $koneksi->query("
-    SELECT DISTINCT p.id_pasien, p.nama
-    FROM pasien p
-    JOIN pendaftaran d ON p.id_pasien = d.id_pasien
-    WHERE d.status != 'selesai'
-");
-
+                                    SELECT p.id_pasien, p.nama
+                                        FROM pasien p
+                                        JOIN pendaftaran d ON p.id_pasien = d.id_pasien
+                                        WHERE d.id_pendaftaran = (
+                                            SELECT MAX(id_pendaftaran)
+                                            FROM pendaftaran
+                                            WHERE id_pasien = p.id_pasien
+                                        )
+                                        AND d.status != 'selesai'
+                                        ");
                                     while ($p = $pasien->fetch_assoc()) {
                                         echo "<option value='{$p['id_pasien']}'>{$p['nama']}</option>";
                                     }

@@ -10,21 +10,27 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $no_hp = $_POST['no_hp'];
     $id_dokter = $_POST['id_dokter'];
 
-    $sql = "INSERT INTO pasien (nama, tanggal_lahir, jenis_kelamin, alamat, no_hp, id_dokter, created_at)
-            VALUES (?, ?, ?, ?, ?, ?, NOW())";
-    $stmt = $koneksi->prepare($sql);
-    $stmt->bind_param("sssssi", $nama, $tanggal_lahir, $jenis_kelamin, $alamat, $no_hp, $id_dokter);
+    //SIMPAN PASIEN
+    $stmt = $koneksi->prepare("
+        INSERT INTO pasien (nama, tanggal_lahir, jenis_kelamin, alamat, no_hp, created_at)
+        VALUES (?, ?, ?, ?, ?, NOW())
+    ");
+    $stmt->bind_param("sssss", $nama, $tanggal_lahir, $jenis_kelamin, $alamat, $no_hp);
+    $stmt->execute();
 
-    if ($stmt->execute()) {
-        $_SESSION['flash_message'] = "Pendaftaran berhasil! Anda masuk dalam antrian.";
-        $_SESSION['flash_type'] = "success"; // bisa 'success' atau 'error'
-    } else {
-        $_SESSION['flash_message'] = "Terjadi kesalahan: " . $koneksi->error;
-        $_SESSION['flash_type'] = "error";
-    }
+    // ambil id pasien baru
+    $id_pasien = $stmt->insert_id;
 
-    $stmt->close();
-    $koneksi->close();
+    //SIMPAN PENDAFTARAN
+    $stmt2 = $koneksi->prepare("
+        INSERT INTO pendaftaran (id_pasien, id_dokter, tanggal_daftar, status)
+        VALUES (?, ?, NOW(), 'menunggu')
+    ");
+    $stmt2->bind_param("ii", $id_pasien, $id_dokter);
+    $stmt2->execute();
+
+    $_SESSION['flash_message'] = "Pendaftaran berhasil! Anda masuk dalam antrian.";
+    $_SESSION['flash_type'] = "success";
 
     header("Location: ../index.php");
     exit;
