@@ -33,7 +33,7 @@ if (!$data) {
 <head>
     <meta charset="UTF-8">
     <title>Cetak Resep</title>
-    <link rel="stylesheet" href="assets/cetak_resep.css">
+    <link rel="stylesheet" href="../admin/assets/cetak_resep.css">
 </head>
 
 <body>
@@ -64,7 +64,16 @@ if (!$data) {
         <h4 class="judul">📝 Resep Obat</h4>
 
         <div class="resep-box">
-            <?= nl2br($data['resep_obat']) ?>
+            <?php
+            $lines = explode("\n", trim($data['resep_obat']));
+            echo "<ol>";
+            foreach ($lines as $line) {
+                if (trim($line)) {
+                    echo "<li>" . htmlspecialchars($line) . "</li>";
+                }
+            }
+            echo "</ol>";
+            ?>
         </div>
 
         <div class="ttd">

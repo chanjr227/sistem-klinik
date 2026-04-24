@@ -1,0 +1,113 @@
+body {
+  font-family: "Segoe UI", Tahoma, sans-serif;
+  background: #f4f6f8;
+  margin: 0;
+  padding: 20px;
+}
+
+.resep-container {
+  width: 800px;
+  margin: auto;
+  background: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* HEADER */
+.header {
+  text-align: center;
+}
+
+.header h2 {
+  margin: 0;
+  letter-spacing: 2px;
+}
+
+.header p {
+  margin: 5px 0 10px;
+  color: #666;
+  font-size: 14px;
+}
+
+.header hr {
+  border: 1px solid #000;
+}
+
+/* INFO PASIEN */
+.info {
+  margin-top: 15px;
+  width: 100%;
+  font-size: 14px;
+}
+
+.info td {
+  padding: 4px 0;
+}
+
+/* JUDUL */
+.judul {
+  margin-top: 25px;
+  border-left: 5px solid #0d6efd;
+  padding-left: 10px;
+  font-weight: 600;
+}
+
+/* RESEP BOX */
+.resep-box {
+  margin-top: 10px;
+  padding: 15px;
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  background: #fafafa;
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+/* TANDA TANGAN */
+.ttd {
+  margin-top: 60px;
+  text-align: right;
+  font-size: 14px;
+}
+
+/* BUTTON */
+.aksi {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.aksi button {
+  padding: 10px 15px;
+  margin: 5px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.aksi button:first-child {
+  background: #28a745;
+  color: #fff;
+}
+
+.aksi button:last-child {
+  background: #dc3545;
+  color: #fff;
+}
+
+/* PRINT MODE */
+@media print {
+  body {
+    background: #fff;
+  }
+
+  .resep-container {
+    box-shadow: none;
+    border: none;
+  }
+
+  .no-print {
+    display: none;
+  }
+}
