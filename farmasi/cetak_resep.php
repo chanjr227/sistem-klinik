@@ -6,6 +6,7 @@ if (!isset($_GET['id'])) {
 }
 
 $id = (int) $_GET['id'];
+$no_resep = "RSP-" . date('Ymd') . "-" . str_pad($id, 4, '0', STR_PAD_LEFT);
 
 $sql = "
     SELECT 
@@ -42,11 +43,15 @@ if (!$data) {
 
         <div class="header">
             <h2>KLINIK SEHAT</h2>
-            <p>Jl. Contoh No. 123 | Telp. 0812xxxxxxx</p>
+            <p>Jl. DMN AJA NO.1| Telp. 08121111</p>
             <hr>
         </div>
 
         <table class="info">
+            <tr>
+                <td>No Resep</td>
+                <td>: <strong><?= $no_resep ?></strong></td>
+            </tr>
             <tr>
                 <td>Nama Pasien</td>
                 <td>: <?= $data['nama_pasien'] ?></td>
@@ -61,18 +66,14 @@ if (!$data) {
             </tr>
         </table>
 
-        <h4 class="judul">📝 Resep Obat</h4>
+        <h4 class="judul">Resep Obat</h4>
 
         <div class="resep-box">
             <?php
-            $lines = explode("\n", trim($data['resep_obat']));
-            echo "<ol>";
-            foreach ($lines as $line) {
-                if (trim($line)) {
-                    echo "<li>" . htmlspecialchars($line) . "</li>";
-                }
+            $lines = explode("\n", $data['resep_obat']);
+            foreach ($lines as $i => $line) {
+                echo "<p><strong>" . ($i + 1) . ".</strong> " . htmlspecialchars($line) . "</p>";
             }
-            echo "</ol>";
             ?>
         </div>
 
