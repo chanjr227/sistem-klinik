@@ -55,24 +55,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $row = $result->fetch_assoc();
             $id_pendaftaran = $row['id_pendaftaran'];
 
-            // 2️⃣ Simpan riwayat konsultasi
+            //Simpan riwayat konsultasi
+            //GENERATE NOMOR RESEP
+            $no_resep = "RSP-" . date('Ymd') . "-" . rand(100, 999);
+
             $stmt1 = $koneksi->prepare("
                 INSERT INTO riwayat_konsultasi 
-                (id_pasien, id_dokter, id_pendaftaran, tanggal, diagnosa, resep_obat, status_obat)
-                VALUES (?, ?, ?, ?, ?, ?, 'pending')
-            ");
+                    (id_pasien, id_dokter, id_pendaftaran, tanggal, diagnosa, resep_obat, status_obat, no_resep)
+                    VALUES (?, ?, ?, ?, ?, ?, 'pending', ?)
+                ");
             $stmt1->bind_param(
-                "iiisss",
+                "iiissss",
                 $id_pasien,
                 $id_dokter,
                 $id_pendaftaran,
                 $tanggal,
                 $diagnosa,
-                $resep_obat
+                $resep_obat,
+                $no_resep
             );
             $stmt1->execute();
 
-            // 3️⃣ Simpan rekam medis
+            //Simpan rekam medis
             $stmt2 = $koneksi->prepare("
                 INSERT INTO rekam_medis 
                 (id_pendaftaran, diagnosa, tindakan, catatan)
