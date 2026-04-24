@@ -6,11 +6,15 @@ $id = intval($_GET['id']);
 $q = $koneksi->query("
     SELECT r.resep_obat, p.nama AS nama_pasien
     FROM riwayat_konsultasi r
-    JOIN pasien_akun p ON r.id_pasien = p.id_pasien
+    LEFT JOIN pasien p ON r.id_pasien = p.id_pasien
     WHERE r.id = $id
 ");
-
 $data = $q->fetch_assoc();
+
+if (!$data) {
+    echo "<div class='alert alert-danger'>❌ Data tidak ditemukan</div>";
+    exit;
+}
 ?>
 
 <h5>👤 Pasien: <?= $data['nama_pasien'] ?></h5>

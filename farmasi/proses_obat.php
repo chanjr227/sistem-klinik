@@ -73,9 +73,9 @@ try {
         // ambil data obat
         $stmt = $koneksi->prepare("
             SELECT id_obat, stok, harga
-            FROM obat
-            WHERE nama_obat = ?
-        ");
+                FROM obat
+                WHERE LOWER(nama_obat) = LOWER(?)
+            ");
         $stmt->bind_param('s', $nama);
         $stmt->execute();
         $obat = $stmt->get_result()->fetch_assoc();
