@@ -6,6 +6,25 @@ if (!isset($_SESSION['user_id'])) {
 }
 include '../config/db.php';
 
+// === TOTAL PASIEN ===
+$q1 = $koneksi->query("SELECT COUNT(*) as total FROM pasien");
+$data_pasien = $q1->fetch_assoc();
+$total_pasien = $data_pasien['total'] ?? 0;
+
+// === TOTAL DOKTER ===
+$q2 = $koneksi->query("SELECT COUNT(*) as total FROM dokter");
+$data_dokter = $q2->fetch_assoc();
+$total_dokter = $data_dokter['total'] ?? 0;
+
+// === ANTRIAN HARI INI (yang belum selesai) ===
+$q3 = $koneksi->query("
+    SELECT COUNT(*) as total 
+    FROM pendaftaran 
+    WHERE status != 'selesai'
+");
+$data_antrian = $q3->fetch_assoc();
+$total_antrian = $data_antrian['total'] ?? 0;
+
 // === Ambil data kunjungan pasien per hari ===
 $labels = [];
 $values = [];
@@ -100,7 +119,7 @@ if ($result && $result->num_rows > 0) {
                     <i class="fa-solid fa-users fa-2x me-3"></i>
                     <div>
                         <h3>Total Pasien</h3>
-                        <p class="number">120</p>
+                        <p class="number"><?= $total_pasien ?></p>
                     </div>
                 </div>
 
@@ -108,7 +127,7 @@ if ($result && $result->num_rows > 0) {
                     <i class="fa-solid fa-user-doctor fa-2x me-3"></i>
                     <div>
                         <h3>Dokter Aktif</h3>
-                        <p class="number">8</p>
+                        <p class="number"><?= $total_dokter ?></p>
                     </div>
                 </div>
 
@@ -116,7 +135,7 @@ if ($result && $result->num_rows > 0) {
                     <i class="fa-solid fa-list-check fa-2x me-3"></i>
                     <div>
                         <h3>Antrian Hari Ini</h3>
-                        <p class="number">35</p>
+                        <p class="number"><?= $total_antrian ?></p>
                     </div>
                 </div>
             </section>
