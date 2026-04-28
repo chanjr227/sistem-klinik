@@ -181,7 +181,9 @@ body {
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
   text-align: center;
-  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.3s ease;
   border-top: 5px solid transparent;
 }
 
@@ -228,19 +230,26 @@ body {
   color: #333;
 }
 
-/* 🌙 DARK MODE */
+/* 🌙 DARK MODE FIX FINAL */
 body.dark {
   background-color: #1e1e2f;
   color: #f5f5f5;
 }
 
+/* CONTENT */
+body.dark .content {
+  background-color: #242437;
+  color: #f5f5f5;
+}
+
+/* SIDEBAR */
 body.dark .sidebar {
   background-color: #2b2b3d;
 }
 
-body.dark .sidebar a {
+/* body.dark .sidebar a {
   color: #ddd;
-}
+} */
 
 body.dark .sidebar a.active,
 body.dark .sidebar a:hover {
@@ -248,25 +257,58 @@ body.dark .sidebar a:hover {
   color: #fff;
 }
 
-body.dark .content {
-  background-color: #242437;
-  color: #f5f5f5;
+/* HEADER */
+body.dark .content-header h1 {
+  color: #ffffff !important;
 }
 
+body.dark .content-header p {
+  color: #cbd5e1 !important;
+}
+
+/* CARD */
 body.dark .card {
   background-color: #32324a;
-  color: #fff;
+  color: #ffffff;
   border: 1px solid #444;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
 }
 
+/* ANGKA (INI YANG PENTING 🔥) */
+body.dark .card .number {
+  color: #ffffff !important;
+  font-weight: bold;
+  text-shadow: 0 0 10px rgba(0, 224, 255, 0.6);
+}
+
+/* TEXT KECIL */
 body.dark .card h3 {
-  color: #dcdcdc;
+  color: #cbd5e1 !important;
 }
 
+/* CHART */
+body.dark .chart-section {
+  background-color: #32324a;
+}
+
+body.dark .chart-section h2 {
+  color: #ffffff !important;
+}
+
+/* CANVAS */
 body.dark canvas {
   background-color: #2a2a3a;
+  border-radius: 8px;
 }
 
+body.dark .sidebar a {
+  color: #e2e8f0;
+}
+
+body.dark .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
+}
 /* === RESPONSIVE === */
 @media (max-width: 768px) {
   .sidebar {

@@ -161,15 +161,22 @@ if ($result && $result->num_rows > 0) {
 
         toggleBtn.addEventListener('click', () => {
             body.classList.toggle('dark');
-            if (body.classList.contains('dark')) {
+
+            const isDark = body.classList.contains('dark'); // ✅ pindah ke sini
+
+            if (isDark) {
                 localStorage.setItem('theme', 'dark');
                 toggleBtn.textContent = "☀️ Light Mode";
             } else {
                 localStorage.setItem('theme', 'light');
                 toggleBtn.textContent = "🌙 Dark Mode";
             }
-        });
 
+            // 🔥 update chart warna
+            chart.options.scales.x.ticks.color = isDark ? '#fff' : '#000';
+            chart.options.scales.y.ticks.color = isDark ? '#fff' : '#000';
+            chart.update();
+        });
         // === SUBMENU TOGGLE ===
         document.querySelectorAll(".submenu-toggle").forEach(menu => {
             menu.addEventListener("click", function(e) {
@@ -187,9 +194,10 @@ if ($result && $result->num_rows > 0) {
         });
 
         //chart.js
+        //chart.js
         const ctx = document.getElementById('kunjunganChart').getContext('2d');
 
-        new Chart(ctx, {
+        const chart = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: <?= json_encode($labels) ?>,
@@ -210,8 +218,16 @@ if ($result && $result->num_rows > 0) {
                     }
                 },
                 scales: {
+                    x: {
+                        ticks: {
+                            color: '#000'
+                        }
+                    },
                     y: {
-                        beginAtZero: true
+                        beginAtZero: true,
+                        ticks: {
+                            color: '#000'
+                        }
                     }
                 }
             }
