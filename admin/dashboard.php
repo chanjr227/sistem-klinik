@@ -141,7 +141,7 @@ if ($result && $result->num_rows > 0) {
             </section>
 
             <section class="chart-section">
-                <h2>📊 Statistik Kunjungan Pasien</h2>
+                <h2>Statistik Kunjungan Pasien</h2>
                 <canvas id="kunjunganChart"></canvas>
             </section>
 
