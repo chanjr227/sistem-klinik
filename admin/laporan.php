@@ -9,14 +9,23 @@ include '../config/db.php';
 // Ambil data pasien
 $dari = $_GET['dari'] ?? '';
 $sampai = $_GET['sampai'] ?? '';
+$dokter = $_GET['dokter'] ?? '';
+
+$sql = "SELECT pasien.nama 
+        FROM pendaftaran
+        JOIN pasien ON pendaftaran.id_pasien = pasien.id_pasien
+        JOIN dokter ON pendaftaran.id_dokter = dokter.id_dokter
+        WHERE 1=1";
 
 if ($dari && $sampai) {
-    $sql = "SELECT nama FROM pasien 
-            WHERE DATE(created_at) BETWEEN '$dari' AND '$sampai'
-            ORDER BY id_pasien ASC";
-} else {
-    $sql = "SELECT nama FROM pasien ORDER BY id_pasien ASC";
+    $sql .= " AND DATE(pendaftaran.tanggal_daftar) BETWEEN '$dari' AND '$sampai'";
 }
+
+if ($dokter) {
+    $sql .= " AND pendaftaran.id_dokter = '$dokter'";
+}
+
+$sql .= " ORDER BY pendaftaran.tanggal_daftar ASC";
 
 $result = $koneksi->query($sql);
 ?>
@@ -100,9 +109,20 @@ $result = $koneksi->query($sql);
                 <label>Sampai:</label>
                 <input type="date" name="sampai" value="<?= $_GET['sampai'] ?? '' ?>">
 
+                <label>Dokter:</label>
+                <select name="dokter">
+                    <option value="">-- Semua Dokter --</option>
+                    <?php
+                    $dokter_query = $koneksi->query("SELECT id_dokter, nama FROM dokter");
+                    while ($d = $dokter_query->fetch_assoc()) {
+                        $selected = (isset($_GET['dokter']) && $_GET['dokter'] == $d['id_dokter']) ? 'selected' : '';
+                        echo "<option value='{$d['id_dokter']}' $selected>{$d['nama']}</option>";
+                    }
+                    ?>
+                </select>
+
                 <button type="submit">Filter</button>
             </form>
-
             <section class="table-section">
                 <h2>📋 Daftar Nama Pasien</h2>
                 <p class="tanggal-cetak">Tanggal cetak: <?= date('d F Y') ?></p>
