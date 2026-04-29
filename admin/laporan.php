@@ -7,7 +7,17 @@ if (!isset($_SESSION['user_id'])) {
 include '../config/db.php';
 
 // Ambil data pasien
-$sql = "SELECT nama FROM pasien ORDER BY id_pasien ASC";
+$dari = $_GET['dari'] ?? '';
+$sampai = $_GET['sampai'] ?? '';
+
+if ($dari && $sampai) {
+    $sql = "SELECT nama FROM pasien 
+            WHERE DATE(created_at) BETWEEN '$dari' AND '$sampai'
+            ORDER BY id_pasien ASC";
+} else {
+    $sql = "SELECT nama FROM pasien ORDER BY id_pasien ASC";
+}
+
 $result = $koneksi->query($sql);
 ?>
 
@@ -82,6 +92,16 @@ $result = $koneksi->query($sql);
                     <i class="fa-solid fa-print"></i> Cetak Laporan
                 </button>
             </header>
+
+            <form method="GET" style="margin-bottom:15px;">
+                <label>Dari:</label>
+                <input type="date" name="dari" value="<?= $_GET['dari'] ?? '' ?>">
+
+                <label>Sampai:</label>
+                <input type="date" name="sampai" value="<?= $_GET['sampai'] ?? '' ?>">
+
+                <button type="submit">Filter</button>
+            </form>
 
             <section class="table-section">
                 <h2>📋 Daftar Nama Pasien</h2>

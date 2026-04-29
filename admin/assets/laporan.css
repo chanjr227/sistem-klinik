@@ -56,3 +56,17 @@ tbody tr:nth-child(even) {
     display: none !important;
   }
 }
+
+form input,
+form button {
+  padding: 6px 10px;
+  margin-right: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+form button {
+  background: #007bff;
+  color: white;
+  border: none;
+}
