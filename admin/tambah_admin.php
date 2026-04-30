@@ -3,11 +3,10 @@ session_start();
 require_once '../config/db.php';
 
 // Pastikan hanya admin login yang bisa akses
-if (!isset($_SESSION['user_id'])) {
-    header("Location: ../auth/login.php");
+if ($_SESSION['role'] !== 'superadmin') {
+    header("Location: dashboard.php");
     exit;
 }
-
 $error = '';
 $success = '';
 

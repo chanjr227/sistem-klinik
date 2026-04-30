@@ -1,7 +1,8 @@
 <?php
 session_start();
-if (!isset($_SESSION['user_id'])) {
-    header("Location: ../auth/login.php");
+
+if ($_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'superadmin') {
+    header("Location: dashboard.php");
     exit;
 }
 include '../config/db.php';

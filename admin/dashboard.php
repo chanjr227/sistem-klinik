@@ -1,48 +1,59 @@
 <?php
 session_start();
+
+// 🔐 CEK LOGIN
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../auth/login.php");
     exit;
 }
+
+// 🔐 CEK ROLE
+if (!in_array($_SESSION['role'], ['admin', 'superadmin'])) {
+    header("Location: ../auth/login.php");
+    exit;
+}
+
 include '../config/db.php';
 
 // === TOTAL PASIEN ===
+$total_pasien = 0;
 $q1 = $koneksi->query("SELECT COUNT(*) as total FROM pasien");
-$data_pasien = $q1->fetch_assoc();
-$total_pasien = $data_pasien['total'] ?? 0;
+if ($q1) {
+    $total_pasien = $q1->fetch_assoc()['total'] ?? 0;
+}
 
 // === TOTAL DOKTER ===
+$total_dokter = 0;
 $q2 = $koneksi->query("SELECT COUNT(*) as total FROM dokter");
-$data_dokter = $q2->fetch_assoc();
-$total_dokter = $data_dokter['total'] ?? 0;
+if ($q2) {
+    $total_dokter = $q2->fetch_assoc()['total'] ?? 0;
+}
 
-// === ANTRIAN HARI INI (yang belum selesai) ===
-$q3 = $koneksi->query("
-    SELECT COUNT(*) as total 
-    FROM pendaftaran 
-    WHERE status != 'selesai'
-");
-$data_antrian = $q3->fetch_assoc();
-$total_antrian = $data_antrian['total'] ?? 0;
+// === ANTRIAN ===
+$total_antrian = 0;
+$q3 = $koneksi->query("SELECT COUNT(*) as total FROM pendaftaran WHERE status != 'selesai'");
+if ($q3) {
+    $total_antrian = $q3->fetch_assoc()['total'] ?? 0;
+}
 
-// === Ambil data kunjungan pasien per hari ===
+// === CHART DATA ===
 $labels = [];
 $values = [];
 
 $sql = "SELECT DATE(tanggal_daftar) as tanggal, COUNT(*) as total
-FROM pendaftaran
-GROUP BY DATE(tanggal_daftar);";
+        FROM pendaftaran
+        GROUP BY DATE(tanggal_daftar)
+        ORDER BY tanggal ASC";
 
 $result = $koneksi->query($sql);
 
-if ($result && $result->num_rows > 0) {
+if ($result) {
     while ($row = $result->fetch_assoc()) {
         $labels[] = date('d M', strtotime($row['tanggal']));
         $values[] = (int)$row['total'];
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="id">
 
@@ -69,38 +80,77 @@ if ($result && $result->num_rows > 0) {
             </div>
 
             <ul class="sidebar-menu">
-                <li><a href="dashboard.php" class="active"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
-                <li><a href="data_pasien.php"><i class="fa-solid fa-users"></i> Data Pasien</a></li>
-
-                <li class="has-submenu">
-                    <a href="#" class="submenu-toggle">
-                        <i class="fa-solid fa-user-doctor"></i>
-                        Data Dokter
-                        <i class="fa-solid fa-angle-right arrow"></i>
-                    </a>
-                    <ul class="submenu">
-                        <li><a href="../admin/dokter/data_dokter.php">Lihat Data Dokter</a></li>
-                        <li><a href="../admin/dokter/riwayat_konsultasi.php">Riwayat konsultasi</a></li>
-                        <li><a href="../admin/dokter/tambah_dokter.php">Tambah Dokter</a></li>
-                    </ul>
-                </li>
-                <li class="has-submenu">
-                    <a href="#" class="submenu-toggle">
-                        <i class="fa-solid fa-prescription-bottle"></i>
-                        Data Obat
-                        <i class="fa-solid fa-angle-right arrow"></i>
-                    </a>
-                    <ul class="submenu">
-                        <li><a href="../farmasi/resep.php" class="active"><i class="fa-solid fa-file-medical"></i> Resep Masuk</a></li>
-                        <li><a href="../farmasi/obat.php" class="active"><i class="fa-solid fa-capsules"></i> Manajemen Obat</a></li>
-                    </ul>
+                <li><a href="dashboard.php" class="active">
+                        <i class="fa-solid fa-gauge"></i> Dashboard</a>
                 </li>
 
+                <?php if ($_SESSION['role'] === 'admin' || $_SESSION['role'] === 'superadmin'): ?>
+                    <li><a href="data_pasien.php">
+                            <i class="fa-solid fa-users"></i> Data Pasien</a>
+                    </li>
+                <?php endif; ?>
 
-                <li><a href="antrian_pasien.php"><i class="fa-solid fa-list"></i> Antrian</a></li>
-                <li><a href="tambah_admin.php"><i class="fa-solid fa-user-plus"></i> Tambah Akun</a></li>
-                <li><a href="laporan.php"><i class="fa-solid fa-file-lines"></i> Laporan</a></li>
-                <li><a href="logout.php" class="logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+                <?php if ($_SESSION['role'] === 'admin' || $_SESSION['role'] === 'superadmin'): ?>
+                    <li class="has-submenu">
+                        <a href="#" class="submenu-toggle">
+                            <i class="fa-solid fa-user-doctor"></i>
+                            Data Dokter
+                            <i class="fa-solid fa-angle-right arrow"></i>
+                        </a>
+                        <ul class="submenu">
+                            <li><a href="../admin/dokter/data_dokter.php">Lihat Data Dokter</a></li>
+                            <li><a href="../admin/dokter/riwayat_konsultasi.php">Riwayat konsultasi</a></li>
+
+                            <?php if ($_SESSION['role'] === 'superadmin'): ?>
+                                <li><a href="../admin/dokter/tambah_dokter.php">Tambah Dokter</a></li>
+                            <?php endif; ?>
+                        </ul>
+                    </li>
+                <?php endif; ?>
+
+                <?php if ($_SESSION['role'] === 'admin' || $_SESSION['role'] === 'superadmin'): ?>
+                    <li class="has-submenu">
+                        <a href="#" class="submenu-toggle">
+                            <i class="fa-solid fa-prescription-bottle"></i>
+                            Data Obat
+                            <i class="fa-solid fa-angle-right arrow"></i>
+                        </a>
+                        <ul class="submenu">
+                            <li><a href="../farmasi/resep.php">
+                                    <i class="fa-solid fa-file-medical"></i> Resep Masuk</a>
+                            </li>
+                            <li><a href="../farmasi/obat.php">
+                                    <i class="fa-solid fa-capsules"></i> Manajemen Obat</a>
+                            </li>
+                        </ul>
+                    </li>
+                <?php endif; ?>
+
+                <?php if ($_SESSION['role'] === 'dokter'): ?>
+                    <li><a href="konsultasi.php">
+                            <i class="fa-solid fa-stethoscope"></i> Konsultasi</a>
+                    </li>
+                <?php endif; ?>
+
+                <?php if ($_SESSION['role'] === 'admin' || $_SESSION['role'] === 'superadmin'): ?>
+                    <li><a href="antrian_pasien.php">
+                            <i class="fa-solid fa-list"></i> Antrian</a>
+                    </li>
+                <?php endif; ?>
+
+                <?php if ($_SESSION['role'] === 'superadmin'): ?>
+                    <li><a href="tambah_admin.php">
+                            <i class="fa-solid fa-user-plus"></i> Tambah Admin</a>
+                    </li>
+                <?php endif; ?>
+
+                <li><a href="laporan.php">
+                        <i class="fa-solid fa-file-lines"></i> Laporan</a>
+                </li>
+
+                <li><a href="logout.php" class="logout">
+                        <i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+                </li>
             </ul>
         </aside>
 
@@ -148,53 +198,19 @@ if ($result && $result->num_rows > 0) {
 
         </main>
     </div>
-
     <script>
-        // === DARK MODE TOGGLE ===
         const body = document.body;
         const toggleBtn = document.getElementById('darkToggle');
 
-        if (localStorage.getItem('theme') === 'dark') {
+        // INIT THEME
+        let isDark = localStorage.getItem('theme') === 'dark';
+
+        if (isDark) {
             body.classList.add('dark');
             toggleBtn.textContent = "☀️ Light Mode";
         }
 
-        toggleBtn.addEventListener('click', () => {
-            body.classList.toggle('dark');
-
-            const isDark = body.classList.contains('dark'); // ✅ pindah ke sini
-
-            if (isDark) {
-                localStorage.setItem('theme', 'dark');
-                toggleBtn.textContent = "☀️ Light Mode";
-            } else {
-                localStorage.setItem('theme', 'light');
-                toggleBtn.textContent = "🌙 Dark Mode";
-            }
-
-            // 🔥 update chart warna
-            chart.options.scales.x.ticks.color = isDark ? '#fff' : '#000';
-            chart.options.scales.y.ticks.color = isDark ? '#fff' : '#000';
-            chart.update();
-        });
-        // === SUBMENU TOGGLE ===
-        document.querySelectorAll(".submenu-toggle").forEach(menu => {
-            menu.addEventListener("click", function(e) {
-                e.preventDefault();
-                const parent = this.parentElement;
-                parent.classList.toggle("open");
-
-                const arrow = this.querySelector(".arrow");
-                if (parent.classList.contains("open")) {
-                    arrow.style.transform = "rotate(90deg)";
-                } else {
-                    arrow.style.transform = "rotate(0deg)";
-                }
-            });
-        });
-
-        //chart.js
-        //chart.js
+        // === CHART ===
         const ctx = document.getElementById('kunjunganChart').getContext('2d');
 
         const chart = new Chart(ctx, {
@@ -220,17 +236,45 @@ if ($result && $result->num_rows > 0) {
                 scales: {
                     x: {
                         ticks: {
-                            color: '#000'
+                            color: isDark ? '#fff' : '#000'
                         }
                     },
                     y: {
                         beginAtZero: true,
                         ticks: {
-                            color: '#000'
+                            color: isDark ? '#fff' : '#000'
                         }
                     }
                 }
             }
+        });
+
+        // === DARK MODE TOGGLE ===
+        toggleBtn.addEventListener('click', () => {
+            body.classList.toggle('dark');
+            isDark = body.classList.contains('dark');
+
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            toggleBtn.textContent = isDark ? "☀️ Light Mode" : "🌙 Dark Mode";
+
+            // update chart warna
+            chart.options.scales.x.ticks.color = isDark ? '#fff' : '#000';
+            chart.options.scales.y.ticks.color = isDark ? '#fff' : '#000';
+            chart.update();
+        });
+
+        // === SUBMENU ===
+        document.querySelectorAll(".submenu-toggle").forEach(menu => {
+            menu.addEventListener("click", function(e) {
+                e.preventDefault();
+                const parent = this.parentElement;
+                parent.classList.toggle("open");
+
+                const arrow = this.querySelector(".arrow");
+                arrow.style.transform = parent.classList.contains("open") ?
+                    "rotate(90deg)" :
+                    "rotate(0deg)";
+            });
         });
     </script>
 </body>

@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../../config/db.php'; // koneksi database
+require_once '../../config/db.php';
 
 if (isset($_SESSION['pasien_id'])) {
     header("Location: ../../index.php");
@@ -8,7 +8,9 @@ if (isset($_SESSION['pasien_id'])) {
 }
 
 $error = '';
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
     $email = trim($_POST['email']);
     $password = $_POST['password'];
 
@@ -17,13 +19,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->execute();
     $result = $stmt->get_result();
 
-    if ($result && $result->num_rows === 1) {
-        $user = $result->fetch_assoc();
+    if ($user = $result->fetch_assoc()) {
+
         if (password_verify($password, $user['password'])) {
+
             $_SESSION['pasien_id'] = $user['id_pasien'];
             $_SESSION['pasien_nama'] = $user['nama'];
-            header("Location: ../../index.php");
-            exit;
+            $_SESSION['role'] = 'pasien'; // 🔥 tambahan
+
+            if (isset($_SESSION['role']) && $_SESSION['role'] == 'pasien') {
+                header("Location: ../../index.php");
+                exit;
+            }
         } else {
             $error = "Password salah!";
         }
