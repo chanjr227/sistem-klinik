@@ -24,16 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['nama'] = $user['nama'];
             $_SESSION['role'] = $user['role'];
 
-            if ($user['role'] === 'superadmin') {
-                header("Location: ../superadmin/dashboard.php");
-            } elseif ($user['role'] === 'admin') {
-                header("Location: ../admin/dashboard.php");
-            } elseif ($user['role'] === 'dokter') {
-                header("Location: ../dokter/dashboard.php");
-            } else {
-                // fallback
-                header("Location: ../auth/login.php");
-            }
+            header("Location: ../admin/dashboard.php");
             exit;
         } else {
             $error = "Password salah!";
